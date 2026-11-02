@@ -37,11 +37,11 @@ $tf_en     = $tf_group ? $tf_group['en'] : 'THE FAST';
             <ul class="tf-gnb__list">
                 <?php foreach ($tf_menu as $gkey => $group) { ?>
                 <li class="tf-gnb__item<?php echo $gkey === $tf_gkey ? ' is-active' : ''; ?>">
-                    <a href="<?php echo $group['sub'][0]['href']; ?>" class="tf-gnb__link"<?php echo $gkey === $tf_gkey ? ' aria-current="true"' : ''; ?>><?php echo $group['title']; ?></a>
+                    <a href="<?php echo $group['sub'][0]['href']; ?>" class="tf-gnb__link"<?php echo $gkey === $tf_gkey ? ' aria-current="true"' : ''; ?>><?php echo get_text($group['title']); ?></a>
                     <div class="tf-gnb__sub">
                         <ul>
                             <?php foreach ($group['sub'] as $item) { ?>
-                            <li><a href="<?php echo $item['href']; ?>"<?php echo $item['key'] === $tf_current ? ' aria-current="page"' : ''; ?>><?php echo $item['title']; ?></a></li>
+                            <li><a href="<?php echo $item['href']; ?>"<?php echo $item['key'] === $tf_current ? ' aria-current="page"' : ''; ?>><?php echo get_text($item['title']); ?></a></li>
                             <?php } ?>
                         </ul>
                     </div>
@@ -81,11 +81,11 @@ $tf_en     = $tf_group ? $tf_group['en'] : 'THE FAST';
             <?php $tf_i = 0; foreach ($tf_menu as $gkey => $group) { $tf_i++; ?>
             <li class="tf-drawer__group<?php echo $gkey === $tf_gkey ? ' is-open' : ''; ?>">
                 <button type="button" class="tf-drawer__toggle" aria-expanded="<?php echo $gkey === $tf_gkey ? 'true' : 'false'; ?>" aria-controls="tfDrawerSub<?php echo $tf_i; ?>">
-                    <span class="tf-drawer__en"><?php echo $group['en']; ?></span><?php echo $group['title']; ?>
+                    <span class="tf-drawer__en"><?php echo $group['en']; ?></span><?php echo get_text($group['title']); ?>
                 </button>
                 <ul id="tfDrawerSub<?php echo $tf_i; ?>" class="tf-drawer__sub">
                     <?php foreach ($group['sub'] as $item) { ?>
-                    <li><a href="<?php echo $item['href']; ?>"<?php echo $item['key'] === $tf_current ? ' aria-current="page"' : ''; ?>><?php echo $item['title']; ?></a></li>
+                    <li><a href="<?php echo $item['href']; ?>"<?php echo $item['key'] === $tf_current ? ' aria-current="page"' : ''; ?>><?php echo get_text($item['title']); ?></a></li>
                     <?php } ?>
                 </ul>
             </li>
@@ -121,7 +121,7 @@ $tf_en     = $tf_group ? $tf_group['en'] : 'THE FAST';
     <div class="tf-inner">
         <ul class="tf-lnb__list">
             <?php foreach ($tf_group['sub'] as $item) { ?>
-            <li><a href="<?php echo $item['href']; ?>" class="tf-lnb__link<?php echo $item['key'] === $tf_current ? ' is-active' : ''; ?>"<?php echo $item['key'] === $tf_current ? ' aria-current="page"' : ''; ?>><?php echo $item['title']; ?></a></li>
+            <li><a href="<?php echo $item['href']; ?>" class="tf-lnb__link<?php echo $item['key'] === $tf_current ? ' is-active' : ''; ?>"<?php echo $item['key'] === $tf_current ? ' aria-current="page"' : ''; ?>><?php echo get_text($item['title']); ?></a></li>
             <?php } ?>
         </ul>
     </div>

@@ -14,7 +14,7 @@ echo '<div id="faq_hhtml">'.conv_content($fm['fm_head_html'], 1).'</div>';
 <form name="faq_search_form" method="get" class="tf-faq-sch" role="search">
     <input type="hidden" name="fm_id" value="<?php echo $fm_id;?>">
     <label for="stx" class="sound_only">자주하는 질문 검색어<strong class="sound_only"> 필수</strong></label>
-    <input type="text" name="stx" value="<?php echo $stx;?>" required id="stx" class="frm_input" maxlength="15" placeholder="궁금한 내용을 검색해 보세요">
+    <input type="text" name="stx" value="<?php echo get_text($stx); ?>" required id="stx" class="frm_input" maxlength="15" placeholder="궁금한 내용을 검색해 보세요">
     <button type="submit" class="tf-bd-btn tf-bd-btn--dark">검색</button>
 </form>
 

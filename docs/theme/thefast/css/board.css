@@ -270,3 +270,4 @@
 .tf-form .required, .tf-write .required, .tf-cmt-form .required { background-image: none !important; }
 /* 중첩 fieldset 의 legend 에는 구분선 스타일을 적용하지 않음 */
 .tf-fieldset .tf-radio-group legend { border: 0; padding: 0; margin: 0 0 10px; font-size: 15px; }
+.tf-hp { position: absolute !important; left: -9999px !important; width: 1px; height: 1px; overflow: hidden; }

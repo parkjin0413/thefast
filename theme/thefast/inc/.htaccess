@@ -1,0 +1,10 @@
+# 이 폴더의 PHP 는 다른 파일에서 불러 쓰는 부품이라 직접 접속을 막습니다. (CSS·이미지는 허용)
+<FilesMatch "\.php$">
+    <IfModule mod_authz_core.c>
+        Require all denied
+    </IfModule>
+    <IfModule !mod_authz_core.c>
+        Order allow,deny
+        Deny from all
+    </IfModule>
+</FilesMatch>

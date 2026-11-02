@@ -53,7 +53,7 @@ if (!function_exists('tf_mask_name')) {
             <input type="hidden" name="sop" value="and">
             <input type="hidden" name="sfl" value="wr_name,1">
             <label for="stx" class="sound_only">작성자 이름 검색</label>
-            <input type="text" name="stx" value="<?php echo stripslashes($stx) ?>" required id="stx" maxlength="20" placeholder="작성자 이름으로 찾기">
+            <input type="text" name="stx" value="<?php echo get_text(stripslashes($stx)); ?>" required id="stx" maxlength="20" placeholder="작성자 이름으로 찾기">
             <button type="submit">검색</button>
         </form>
     </div>
@@ -93,7 +93,7 @@ if (!function_exists('tf_mask_name')) {
                 </a>
                 <?php if ($list[$i]['icon_new']) { ?><span class="tf-badge tf-badge--new">N<span class="sound_only">새글</span></span><?php } ?>
             </div>
-            <span class="tf-bd-list__name"><span class="sound_only">작성자 </span><?php echo $is_admin ? get_text($list[$i]['wr_name']) : tf_mask_name($list[$i]['wr_name']); ?></span>
+            <span class="tf-bd-list__name"><span class="sound_only">작성자 </span><?php echo $is_admin ? get_text($list[$i]['wr_name']) : get_text(tf_mask_name($list[$i]['wr_name'])); ?></span>
             <span class="tf-bd-list__date"><span class="sound_only">작성일 </span><?php echo $list[$i]['datetime2'] ?></span>
         </li>
         <?php } ?>

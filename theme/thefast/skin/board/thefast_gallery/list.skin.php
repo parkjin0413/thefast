@@ -31,7 +31,7 @@ $tf_th = $board['bo_gallery_height'] ? (int) $board['bo_gallery_height'] : 480;
                 <?php echo get_board_sfl_select_options($sfl); ?>
             </select>
             <label for="stx" class="sound_only">검색어<strong class="sound_only"> 필수</strong></label>
-            <input type="text" name="stx" value="<?php echo stripslashes($stx) ?>" required id="stx" maxlength="20" placeholder="검색어 입력">
+            <input type="text" name="stx" value="<?php echo get_text(stripslashes($stx)); ?>" required id="stx" maxlength="20" placeholder="검색어 입력">
             <button type="submit">검색</button>
         </form>
     </div>

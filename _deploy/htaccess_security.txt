@@ -1,0 +1,53 @@
+# =====================================================================
+# 사이트 루트 .htaccess 보안 권장 설정 (카페24 Apache)
+# 사용법: 루트 .htaccess 맨 위에 필요한 블록만 붙여넣으세요.
+#        (htaccess_redirects.txt 와 함께 쓸 때는 이 파일 내용을 먼저 두세요)
+# 적용 후 메인, 게시판, 관리자, 글쓰기 화면이 정상인지 꼭 확인하세요.
+# =====================================================================
+
+# 1) HTTPS 강제 (카페24 무료 SSL 적용 후 사용)
+<IfModule mod_rewrite.c>
+RewriteEngine On
+RewriteCond %{HTTPS} off
+RewriteCond %{HTTP:X-Forwarded-Proto} !https
+RewriteRule ^(.*)$ https://%{HTTP_HOST}/$1 [R=301,L]
+</IfModule>
+
+# 2) 폴더 목록 보기 차단
+Options -Indexes
+
+# 3) 설치 폴더 차단 — 설치가 끝나면 /install 폴더는 삭제가 가장 안전합니다. 삭제가 어렵다면 아래로 차단
+<IfModule mod_rewrite.c>
+RewriteRule ^install(/|$) - [F,L]
+</IfModule>
+
+# 4) 숨김 파일(.git, .env 등)·백업·문서 파일 직접 열람 차단
+<IfModule mod_rewrite.c>
+RewriteRule (^|/)\.(?!well-known/) - [F,L]
+</IfModule>
+<FilesMatch "\.(sql|bak|old|orig|swp|log|ini|sh|md|zip|tar|gz|7z)$">
+    <IfModule mod_authz_core.c>
+        Require all denied
+    </IfModule>
+    <IfModule !mod_authz_core.c>
+        Order allow,deny
+        Deny from all
+    </IfModule>
+</FilesMatch>
+
+# 5) (선택) 관리자 페이지를 사무실 IP 에서만 접속 허용
+#    123.123.123.123 을 사무실 공인 IP 로 바꾸고 주석(#)을 지우세요.
+#    외부에서 관리할 일이 있으면 쓰지 마세요.
+# <IfModule mod_rewrite.c>
+# RewriteCond %{REQUEST_URI} ^/adm/ [NC]
+# RewriteCond %{REMOTE_ADDR} !^123\.123\.123\.123$
+# RewriteRule .* - [F,L]
+# </IfModule>
+
+# 6) 보안 헤더 (이미지·CSS 같은 PHP 가 아닌 파일까지 적용)
+#    테마 head.sub.php 에서도 같은 헤더를 보내므로, 서버에서 mod_headers 를 지원할 때만 추가로 사용
+<IfModule mod_headers.c>
+    Header always set X-Content-Type-Options "nosniff"
+    Header always set X-Frame-Options "SAMEORIGIN"
+    Header always set Referrer-Policy "strict-origin-when-cross-origin"
+</IfModule>

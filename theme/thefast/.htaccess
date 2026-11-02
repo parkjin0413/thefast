@@ -1,0 +1,14 @@
+# 더패스트 테마 폴더 보호 (Apache / 카페24)
+# 폴더 목록 보기 차단
+Options -Indexes
+
+# 설정·문서·백업 파일은 웹에서 직접 열람 금지 (PHP 가 내부에서 읽는 것은 문제없음)
+<FilesMatch "\.(sql|md|txt|log|bak|orig|swp|ini|sh|json|lock|dist)$|^site\.config\.php$|^theme\.config\.php$">
+    <IfModule mod_authz_core.c>
+        Require all denied
+    </IfModule>
+    <IfModule !mod_authz_core.c>
+        Order allow,deny
+        Deny from all
+    </IfModule>
+</FilesMatch>

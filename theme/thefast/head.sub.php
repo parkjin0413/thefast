@@ -47,6 +47,18 @@ $tf_canonical = !empty($tf_meta['canonical']) ? $tf_meta['canonical'] : $tf_sche
 $tf_og_image  = G5_THEME_URL.$tf_seo['og_image'];
 $tf_robots    = (defined('G5_IS_ADMIN') || in_array(basename($_SERVER['SCRIPT_NAME'] ?? ''), array('write.php', 'login.php', 'register.php', 'register_form.php', 'password.php', 'member_confirm.php', 'alert.php', 'search.php'))) ? 'noindex,nofollow' : 'index,follow';
 
+/* ---------- 보안 헤더 (서버 설정이 없어도 PHP 화면에는 적용) ---------- */
+if (!headers_sent()) {
+    header('X-Content-Type-Options: nosniff');                  // 파일 형식 위장 공격 방지
+    header('X-Frame-Options: SAMEORIGIN');                      // 다른 사이트가 우리 화면을 iframe 으로 덮어씌우는 클릭재킹 방지
+    header('Referrer-Policy: strict-origin-when-cross-origin'); // 외부로 이동할 때 전체 주소(검색어 등) 노출 방지
+    header('Permissions-Policy: camera=(), microphone=(), geolocation=(), payment=(), usb=()');
+    header("Content-Security-Policy: frame-ancestors 'self'; base-uri 'self'; object-src 'none'; form-action 'self'");
+    if (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') {
+        header('Strict-Transport-Security: max-age=31536000'); // HTTPS 접속을 1년간 강제
+    }
+}
+
 /*
 // 만료된 페이지로 사용하시는 경우
 header("Cache-Control: no-cache"); // HTTP/1.1
@@ -90,7 +102,7 @@ if($config['cf_add_meta'])
 <link rel="icon" type="image/png" sizes="96x96" href="<?php echo tf_img('favicon/favicon-96x96.png'); ?>">
 <link rel="apple-touch-icon" sizes="180x180" href="<?php echo tf_img('favicon/apple-icon-180x180.png'); ?>">
 <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css" integrity="sha384-GIdEBaqGN9mNkDkMkzMHW8EKUqtpPIe/sLj1X7DIrnc9uPtLROJgmuDlh+3rBw0j" crossorigin="anonymous">
 <?php
 // 그누보드 시스템 화면용 기본 CSS + 테마 CSS (반응형 단일 테마이므로 기기 구분 없이 동일하게 로드)
 echo '<link rel="stylesheet" href="'.get_versioned_asset_url(run_replace('head_css_url', G5_THEME_CSS_URL.'/default.css', G5_THEME_URL)).'">'.PHP_EOL;
@@ -168,7 +180,7 @@ if ($tf_is_index) {
     );
     $tf_same = array_values(array_filter(array($tf_site['blog'], $tf_site['instagram'], $tf_site['youtube'], $tf_site['kakao'])));
     if ($tf_same) $tf_ld['sameAs'] = $tf_same;
-    echo '<script type="application/ld+json">'.json_encode($tf_ld, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES).'</script>'.PHP_EOL;
+    echo '<script type="application/ld+json">'.json_encode($tf_ld, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_HEX_TAG | JSON_HEX_AMP).'</script>'.PHP_EOL;
 }
 ?>
 </head>

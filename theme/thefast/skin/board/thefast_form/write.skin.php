@@ -16,6 +16,9 @@ $tf_val = function ($k) use ($w, $tf_write) {
     return ($w == 'u' && isset($tf_write[$k])) ? get_text($tf_write[$k]) : '';
 };
 $tf_subject_default = $tf_is_partner ? '제휴 문의드립니다' : '상담 신청합니다';
+
+// 스팸 방지: 신청서를 연 시각 기록 (너무 빨리 제출되면 자동 프로그램으로 판단)
+set_session('ss_tf_form_'.$bo_table, time());
 ?>
 
 <section id="bo_w" class="tf-form">
@@ -38,6 +41,8 @@ $tf_subject_default = $tf_is_partner ? '제휴 문의드립니다' : '상담 신
 
     <form name="fwrite" id="fwrite" action="<?php echo $action_url ?>" onsubmit="return fwrite_submit(this);" method="post" enctype="multipart/form-data" autocomplete="on" novalidate>
     <input type="hidden" name="uid" value="<?php echo get_uniqid(); ?>">
+    <!-- 스팸 방지용 숨김 칸: 사람에게는 보이지 않으며, 값이 채워지면 자동 프로그램으로 판단 -->
+    <div class="tf-hp" aria-hidden="true"><label for="tf_homepage">홈페이지</label><input type="text" name="tf_homepage" id="tf_homepage" value="" tabindex="-1" autocomplete="off"></div>
     <input type="hidden" name="w" value="<?php echo $w ?>">
     <input type="hidden" name="bo_table" value="<?php echo $bo_table ?>">
     <input type="hidden" name="wr_id" value="<?php echo $wr_id ?>">

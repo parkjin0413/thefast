@@ -43,10 +43,10 @@ $tf_hide_cta = in_array($tf_current, array('inquiry', 'partner'), true);
             <nav class="tf-footer__nav" aria-label="사이트맵">
                 <?php foreach ($tf_menu as $group) { ?>
                 <div>
-                    <h2><?php echo $group['title']; ?></h2>
+                    <h2><?php echo get_text($group['title']); ?></h2>
                     <ul>
                         <?php foreach ($group['sub'] as $item) { if ($item['title'] === '전체') continue; ?>
-                        <li><a href="<?php echo $item['href']; ?>"><?php echo $item['title']; ?></a></li>
+                        <li><a href="<?php echo $item['href']; ?>"><?php echo get_text($item['title']); ?></a></li>
                         <?php } ?>
                     </ul>
                 </div>
