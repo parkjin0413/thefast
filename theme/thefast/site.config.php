@@ -299,3 +299,16 @@ function tf_filesize($bytes)
     if ($bytes >= 1024) return round($bytes / 1024).'KB';
     return $bytes.'B';
 }
+
+/**
+ * 테마 CSS/JS 주소에 버전 꼬리표(?v=수정시각)를 붙여 브라우저 캐시 문제를 막음.
+ * 그누보드 get_versioned_asset_url() 은 5.6 후반 버전에만 있어서, 구버전에서도
+ * 빈 화면(치명적 오류)이 나지 않도록 테마 자체 함수로 처리합니다.
+ */
+function tf_asset_url($url)
+{
+    $path = '';
+    if (strpos($url, G5_THEME_URL) === 0) $path = G5_THEME_PATH.substr($url, strlen(G5_THEME_URL));
+    $ver = ($path && is_file($path)) ? filemtime($path) : (defined('G5_CSS_VER') ? G5_CSS_VER : '1');
+    return $url.(strpos($url, '?') === false ? '?' : '&amp;').'v='.$ver;
+}

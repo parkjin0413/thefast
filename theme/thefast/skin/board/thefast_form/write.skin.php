@@ -6,7 +6,7 @@
  * - 관리자 > 게시판 설정에서 "비밀글 사용: 무조건", "DHTML 에디터 사용: 미사용" 으로 두세요.
  */
 if (!defined('_GNUBOARD_')) exit; // 개별 페이지 접근 불가
-add_stylesheet('<link rel="stylesheet" href="'.get_versioned_asset_url(G5_THEME_CSS_URL.'/board.css').'">', 0);
+add_stylesheet('<link rel="stylesheet" href="'.tf_asset_url(G5_THEME_CSS_URL.'/board.css').'">', 0);
 
 global $tf_board_fields, $tf_boards, $tf_site;
 $tf_is_partner = ($bo_table === $tf_boards['partner']);

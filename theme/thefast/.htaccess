@@ -1,6 +1,5 @@
 # 더패스트 테마 폴더 보호 (Apache / 카페24)
-# 폴더 목록 보기 차단
-Options -Indexes
+# (폴더 목록 차단 Options -Indexes 는 호스팅에 따라 500 오류를 내므로 넣지 않음 — 루트 설정 안내 참고)
 
 # 설정·문서·백업 파일은 웹에서 직접 열람 금지 (PHP 가 내부에서 읽는 것은 문제없음)
 <FilesMatch "\.(sql|md|txt|log|bak|orig|swp|ini|sh|json|lock|dist)$|^site\.config\.php$|^theme\.config\.php$">

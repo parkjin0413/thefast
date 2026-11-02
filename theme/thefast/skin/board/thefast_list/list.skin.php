@@ -1,6 +1,6 @@
 <?php
 if (!defined('_GNUBOARD_')) exit; // 개별 페이지 접근 불가
-add_stylesheet('<link rel="stylesheet" href="'.get_versioned_asset_url(G5_THEME_CSS_URL.'/board.css').'">', 0);
+add_stylesheet('<link rel="stylesheet" href="'.tf_asset_url(G5_THEME_CSS_URL.'/board.css').'">', 0);
 ?>
 
 <div id="bo_list" class="tf-bd">

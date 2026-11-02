@@ -13,7 +13,7 @@ RewriteCond %{HTTP:X-Forwarded-Proto} !https
 RewriteRule ^(.*)$ https://%{HTTP_HOST}/$1 [R=301,L]
 </IfModule>
 
-# 2) 폴더 목록 보기 차단
+# 2) 폴더 목록 보기 차단 — 적용 후 사이트 전체가 500 오류면 이 줄만 지우세요(호스팅이 허용하지 않는 경우)
 Options -Indexes
 
 # 3) 설치 폴더 차단 — 설치가 끝나면 /install 폴더는 삭제가 가장 안전합니다. 삭제가 어렵다면 아래로 차단

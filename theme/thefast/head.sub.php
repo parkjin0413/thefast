@@ -105,8 +105,8 @@ if($config['cf_add_meta'])
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css" integrity="sha384-GIdEBaqGN9mNkDkMkzMHW8EKUqtpPIe/sLj1X7DIrnc9uPtLROJgmuDlh+3rBw0j" crossorigin="anonymous">
 <?php
 // 그누보드 시스템 화면용 기본 CSS + 테마 CSS (반응형 단일 테마이므로 기기 구분 없이 동일하게 로드)
-echo '<link rel="stylesheet" href="'.get_versioned_asset_url(run_replace('head_css_url', G5_THEME_CSS_URL.'/default.css', G5_THEME_URL)).'">'.PHP_EOL;
-echo '<link rel="stylesheet" href="'.get_versioned_asset_url(G5_THEME_CSS_URL.'/theme.css').'">'.PHP_EOL;
+echo '<link rel="stylesheet" href="'.tf_asset_url(run_replace('head_css_url', G5_THEME_CSS_URL.'/default.css', G5_THEME_URL)).'">'.PHP_EOL;
+echo '<link rel="stylesheet" href="'.tf_asset_url(G5_THEME_CSS_URL.'/theme.css').'">'.PHP_EOL;
 ?>
 <script>
 // 자바스크립트에서 사용하는 전역변수 선언
@@ -141,7 +141,7 @@ add_javascript('<script src="'.G5_JS_URL.'/common.js"></script>', 0);
 add_javascript('<script src="'.G5_JS_URL.'/wrest.js"></script>', 0);
 add_javascript('<script src="'.G5_JS_URL.'/placeholders.min.js"></script>', 0);
 add_stylesheet('<link rel="stylesheet" href="'.G5_JS_URL.'/font-awesome/css/font-awesome.min.css">', 0);
-add_javascript('<script src="'.get_versioned_asset_url(G5_THEME_JS_URL.'/theme.js').'" defer></script>', 10);
+add_javascript('<script src="'.tf_asset_url(G5_THEME_JS_URL.'/theme.js').'" defer></script>', 10);
 
 if(G5_IS_MOBILE) {
     add_javascript('<script src="'.G5_JS_URL.'/modernizr.custom.70111.js"></script>', 1); // overflow scroll 감지

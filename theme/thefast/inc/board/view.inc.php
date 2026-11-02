@@ -9,7 +9,7 @@ include_once(G5_LIB_PATH.'/thumbnail.lib.php');
 global $tf_board_fields;
 $tf_fields = isset($tf_board_fields[$bo_table]) ? $tf_board_fields[$bo_table] : array();
 
-add_stylesheet('<link rel="stylesheet" href="'.get_versioned_asset_url(G5_THEME_CSS_URL.'/board.css').'">', 0);
+add_stylesheet('<link rel="stylesheet" href="'.tf_asset_url(G5_THEME_CSS_URL.'/board.css').'">', 0);
 ?>
 <script src="<?php echo G5_JS_URL; ?>/viewimageresize.js"></script>
 
