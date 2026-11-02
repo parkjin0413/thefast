@@ -9,22 +9,15 @@
     function $(sel, ctx) { return (ctx || doc).querySelector(sel); }
     function $$(sel, ctx) { return Array.prototype.slice.call((ctx || doc).querySelectorAll(sel)); }
 
-    /* ---------- 헤더: 스크롤 상태 / 내릴 때 숨김 ---------- */
+    /* ---------- 헤더: 스크롤하면 흰 배경으로 고정 (숨기지 않음) ---------- */
     var header = $('#tfHeader');
     var topBtn = $('#tfTop');
-    var lastY = window.pageYOffset;
     var ticking = false;
 
     function onScroll() {
         var y = window.pageYOffset;
-        if (header) {
-            header.classList.toggle('is-scrolled', y > 40);
-            var hide = y > 400 && y > lastY && !header.matches(':focus-within') && !body.classList.contains('tf-lock');
-            header.classList.toggle('is-hidden', hide);
-            body.classList.toggle('tf-header-hidden', hide);
-        }
+        if (header) header.classList.toggle('is-scrolled', y > 10);
         if (topBtn) topBtn.classList.toggle('is-visible', y > 600);
-        lastY = y;
         ticking = false;
     }
     window.addEventListener('scroll', function () {
@@ -97,6 +90,10 @@
         });
         window.addEventListener('resize', function () { if (window.innerWidth > 1100) closeDrawer(); });
     }
+
+    /* 서브 탭: 현재 탭이 보이도록 가로 스크롤 맞춤 */
+    var lnbOn = $('.tf-lnb__link.is-active');
+    if (lnbOn) { var lst = lnbOn.closest('.tf-lnb__list'); if (lst.scrollWidth > lst.clientWidth) lst.scrollLeft = Math.max(0, lnbOn.offsetLeft - 20); }
 
     /* GNB: ESC 로 하위메뉴 닫기 */
     $$('.tf-gnb__item').forEach(function (item) {

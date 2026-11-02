@@ -156,11 +156,15 @@ $tf_slides = array(
                 <h2 class="tf-h2 tf-reveal" id="tfPortTitle">더패스트가 완성한 공간</h2>
                 <p class="tf-lead tf-reveal">거실, 주방, 욕실부터 관공서와 상업 공간까지 빠른 시공이 가능합니다.</p>
             </div>
+            <?php if ($tf_portfolio_cates) { ?>
             <nav class="tf-space tf-reveal" aria-label="시공사례 분류">
-                <?php foreach ($tf_portfolio_cates as $cate => $info) { ?>
-                <a href="<?php echo tf_board_url($tf_boards['portfolio'], $cate); ?>"><?php echo $cate; ?></a>
+                <?php foreach ($tf_portfolio_cates as $cate) { ?>
+                <a href="<?php echo tf_portfolio_url($cate); ?>"><?php echo get_text($cate); ?></a>
                 <?php } ?>
             </nav>
+            <?php } else { ?>
+            <a href="<?php echo tf_portfolio_url(); ?>" class="tf-link tf-reveal">시공사례 전체 보기 <span aria-hidden="true">→</span></a>
+            <?php } ?>
         </div>
 
         <?php if ($tf_portfolio) { ?>

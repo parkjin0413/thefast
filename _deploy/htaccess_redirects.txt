@@ -6,6 +6,8 @@
 #   * 아래는 _deploy/root/ 의 짧은 주소 파일을 올리고 site.config.php 에서
 #     TF_ROOT_PAGES 를 true 로 바꾼 경우 기준입니다.
 #     짧은 주소를 쓰지 않으면 /about.php 를 /theme/thefast/page/about.php 처럼 바꾸세요.
+#   * 시공사례 분류(sca=)는 기본 분류 주거공간/관공서/상업시설/기타시공 기준입니다.
+#     게시판 분류를 다르게 정하면 아래 sub_portfolio0N 줄의 분류명을 맞춰 주세요.
 # =====================================================================
 <IfModule mod_rewrite.c>
 RewriteEngine On

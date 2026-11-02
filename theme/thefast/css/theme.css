@@ -120,7 +120,7 @@ body.tf-lock { overflow: hidden; }
 .tf-empty strong { display: block; margin-bottom: 6px; color: var(--tf-ink); font-size: 18px; }
 
 /* 4. 헤더 / 메뉴 ----------------------------------------------------- */
-.tf-header { position: sticky; top: 0; z-index: 900; height: var(--tf-header-h); background: rgba(255,255,255,.92); border-bottom: 1px solid var(--tf-line); -webkit-backdrop-filter: saturate(160%) blur(14px); backdrop-filter: saturate(160%) blur(14px); transition: background-color .3s, border-color .3s, transform .35s var(--tf-ease); }
+.tf-header { position: sticky; top: 0; z-index: 900; height: var(--tf-header-h); background: #fff; border-bottom: 1px solid var(--tf-line); transition: background-color .3s, border-color .3s, box-shadow .3s; }
 .tf-header__inner { display: flex; align-items: center; height: 100%; max-width: 1600px; margin: 0 auto; padding: 0 var(--tf-gutter); }
 .tf-logo { flex: none; margin-right: auto; }
 .tf-logo a { display: block; }
@@ -156,12 +156,15 @@ body.tf-lock { overflow: hidden; }
 .tf-header.is-overlay .tf-logo__dark { display: none !important; }
 .tf-header.is-overlay .tf-logo__light { display: block !important; }
 .tf-header.is-overlay .tf-burger__bar, .tf-header.is-overlay .tf-burger__bar::before, .tf-header.is-overlay .tf-burger__bar::after { background: #fff; }
-.tf-header.is-overlay.is-scrolled { background: rgba(255,255,255,.94); border-color: var(--tf-line); -webkit-backdrop-filter: saturate(160%) blur(14px); backdrop-filter: saturate(160%) blur(14px); }
+.tf-header.is-scrolled { background: #fff; border-color: var(--tf-line); box-shadow: 0 4px 20px rgba(23,24,28,.06); }
+.tf-header.is-overlay.is-scrolled { background: #fff; border-color: var(--tf-line); }
+/* 서브 탭(LNB)이 있는 페이지: 헤더와 탭이 한 덩어리로 붙도록 그림자는 탭 아래에만 */
+body:has(.tf-lnb) .tf-header.is-scrolled { box-shadow: none; }
+body:has(.tf-lnb) .tf-header.is-scrolled ~ .tf-lnb, .tf-lnb.is-stuck { box-shadow: 0 4px 20px rgba(23,24,28,.06); }
 .tf-header.is-overlay.is-scrolled .tf-gnb__link, .tf-header.is-overlay.is-scrolled .tf-header__tel { color: var(--tf-ink); }
 .tf-header.is-overlay.is-scrolled .tf-logo__dark { display: block !important; }
 .tf-header.is-overlay.is-scrolled .tf-logo__light { display: none !important; }
 .tf-header.is-overlay.is-scrolled .tf-burger__bar, .tf-header.is-overlay.is-scrolled .tf-burger__bar::before, .tf-header.is-overlay.is-scrolled .tf-burger__bar::after { background: var(--tf-ink); }
-.tf-header.is-hidden { transform: translateY(-100%); }
 
 /* 전체 메뉴 (드로어) */
 .tf-drawer { position: fixed; top: 0; right: 0; bottom: 0; z-index: 1001; display: flex; flex-direction: column; width: min(440px, 100%); background: #fff; box-shadow: var(--tf-shadow-lg); transform: translateX(100%); transition: transform .4s var(--tf-ease); overflow-y: auto; overscroll-behavior: contain; }
@@ -199,8 +202,7 @@ body.tf-lock { overflow: hidden; }
 .tf-breadcrumb a:hover { color: #fff; text-decoration: underline; }
 .tf-breadcrumb [aria-current] { color: #fff; }
 
-.tf-lnb { position: sticky; top: var(--tf-header-h); z-index: 50; background: #fff; border-bottom: 1px solid var(--tf-line); transition: top .35s var(--tf-ease); }
-body.tf-header-hidden .tf-lnb { top: 0; }
+.tf-lnb { position: sticky; top: var(--tf-header-h); z-index: 800; background: #fff; border-bottom: 1px solid var(--tf-line); }
 .tf-lnb__list { display: flex; gap: clamp(20px, 3vw, 44px); overflow-x: auto; scrollbar-width: none; -webkit-overflow-scrolling: touch; }
 .tf-lnb__list::-webkit-scrollbar { display: none; }
 .tf-lnb__link { position: relative; display: block; padding: 20px 0; font-size: 16px; font-weight: 500; color: var(--tf-muted); white-space: nowrap; transition: color .2s; }
@@ -573,4 +575,9 @@ body.tf-header-hidden .tf-lnb { top: 0; }
 @media print {
     .tf-header, .tf-drawer, .tf-quick, .tf-cta, .tf-lnb { display: none !important; }
     .tf-reveal { opacity: 1; transform: none; }
+}
+
+/* 모바일 서브 탭: 가로 스크롤 가능함을 오른쪽 페이드로 안내 */
+@media (max-width: 860px) {
+    .tf-lnb__list { -webkit-mask-image: linear-gradient(90deg, #000 85%, transparent); mask-image: linear-gradient(90deg, #000 85%, transparent); padding-right: 32px; }
 }

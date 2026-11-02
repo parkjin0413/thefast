@@ -72,7 +72,9 @@ function tf_board_url($bo_table, $sca = '')
  * 4. 게시판 테이블명 (관리자에서 만든 게시판 ID와 같아야 합니다)
  * ------------------------------------------------------------------ */
 $tf_boards = array(
-    'portfolio' => 'portfolio', // 시공사례 (분류: 주거공간|관공서|상업시설|기타시공)
+    // 시공사례 = 갤러리 게시판. 관리자에서 만든 갤러리 게시판 ID 를 넣으세요. (스킨: 테마 thefast_gallery 권장)
+    // 메뉴의 하위 분류는 이 게시판의 "분류" 설정을 자동으로 읽어 만듭니다.
+    'portfolio' => 'portfolio',
     'review'    => 'review',    // 고객후기
     'event'     => 'event',     // 리뷰 이벤트
     'news'      => 'news',      // 더패스트 소식
@@ -81,28 +83,63 @@ $tf_boards = array(
     'partner'   => 'partner',   // 제휴문의 (비밀글)
 );
 
-/* 시공사례 분류 — 게시판 관리 > 분류 와 똑같이 입력하세요 */
-$tf_portfolio_cates = array(
-    '주거공간' => array('en' => 'Residential', 'desc' => '아파트 · 단독주택 · 빌라 · 욕실 · 주방'),
-    '관공서'   => array('en' => 'Public',      'desc' => '관공서 · 학교 · 어린이집 · 병원'),
-    '상업시설' => array('en' => 'Commercial',  'desc' => '카페 · 매장 · 사무실 · 피트니스'),
-    '기타시공' => array('en' => 'Others',      'desc' => '흡음 · 천장 · 바닥 등 부분 시공'),
+/* 시공사례 분류별 메뉴 이름 (선택) — 여기 없는 분류는 분류명 그대로 메뉴에 표시됩니다. */
+$tf_portfolio_labels = array(
+    '주거공간' => '주거공간 인테리어',
+    '관공서'   => '관공서 인테리어',
+    '상업시설' => '상업시설 인테리어',
+    '기타시공' => '기타 시공',
 );
+
+/**
+ * 시공사례 갤러리 게시판의 분류 목록 (게시판 관리 > 분류 설정을 그대로 사용)
+ * 게시판이 없거나 분류를 쓰지 않으면 빈 배열
+ */
+function tf_portfolio_categories()
+{
+    static $cates = null;
+    if ($cates !== null) return $cates;
+    global $g5, $tf_boards;
+
+    $cates = array();
+    $bo = preg_replace('/[^a-z0-9_]/i', '', $tf_boards['portfolio']);
+    if (!$bo || empty($g5['board_table'])) return $cates;
+
+    $row = sql_fetch(" select bo_use_category, bo_category_list from {$g5['board_table']} where bo_table = '{$bo}' ");
+    if (!empty($row['bo_use_category']) && trim((string) $row['bo_category_list']) !== '') {
+        foreach (explode('|', $row['bo_category_list']) as $c) {
+            $c = trim($c);
+            if ($c !== '') $cates[] = $c;
+        }
+    }
+    return $cates;
+}
+
+/* 시공사례 링크: 실제로 있는 분류면 분류 주소, 없으면 게시판 전체 주소 */
+function tf_portfolio_url($cate = '')
+{
+    global $tf_boards;
+    return ($cate !== '' && in_array($cate, tf_portfolio_categories(), true))
+        ? tf_board_url($tf_boards['portfolio'], $cate)
+        : tf_board_url($tf_boards['portfolio']);
+}
+
+$tf_portfolio_cates = tf_portfolio_categories();
 
 /* 게시판 확장필드(wr_1~wr_10) 매핑 — 스킨이 이 표를 보고 입력칸/표시칸을 만듭니다.
  * type: text | select | radio   / req: 필수 여부   / list: 목록·카드에 표시 */
 $tf_board_fields = array(
-    'portfolio' => array(
+    $tf_boards['portfolio'] => array(
         'wr_2' => array('label' => '지역',     'type' => 'text', 'ph' => '예) 경기 양주시', 'list' => true),
         'wr_1' => array('label' => '평수',     'type' => 'text', 'ph' => '예) 32평', 'list' => true),
         'wr_3' => array('label' => '공사기간', 'type' => 'text', 'ph' => '예) 5일'),
         'wr_4' => array('label' => '공사범위', 'type' => 'text', 'ph' => '예) 욕실 벽체, 주방 벽면'),
     ),
-    'review' => array(
+    $tf_boards['review'] => array(
         'wr_2' => array('label' => '지역',      'type' => 'text', 'ph' => '예) 서울 노원구', 'list' => true),
         'wr_1' => array('label' => '시공 공간', 'type' => 'text', 'ph' => '예) 욕실 리모델링', 'list' => true),
     ),
-    'inquiry' => array(
+    $tf_boards['inquiry'] => array(
         'wr_1' => array('label' => '연락처',        'type' => 'tel',    'req' => true, 'ph' => '010-0000-0000'),
         'wr_2' => array('label' => '공간 유형',     'type' => 'radio',  'req' => true, 'options' => array('아파트', '단독주택', '빌라·다세대', '상가·매장', '사무실', '관공서·학교', '병원', '기타')),
         'wr_6' => array('label' => '시공 지역',     'type' => 'text',   'ph' => '예) 경기 양주시 회암동'),
@@ -110,7 +147,7 @@ $tf_board_fields = array(
         'wr_4' => array('label' => '예산',          'type' => 'select', 'options' => array('상담 후 결정', '500만원 미만', '500~1,000만원', '1,000~3,000만원', '3,000~5,000만원', '5,000만원 이상')),
         'wr_5' => array('label' => '희망 시공 시기', 'type' => 'select', 'options' => array('최대한 빨리', '1개월 이내', '1~3개월 이내', '3개월 이후', '미정')),
     ),
-    'partner' => array(
+    $tf_boards['partner'] => array(
         'wr_2' => array('label' => '회사명',    'type' => 'text',  'req' => true, 'ph' => '회사(상호)명'),
         'wr_1' => array('label' => '연락처',    'type' => 'tel',   'req' => true, 'ph' => '010-0000-0000'),
         'wr_3' => array('label' => '제휴 유형', 'type' => 'radio', 'req' => true, 'options' => array('자재 공급', '시공 협력', '대리점·유통', '마케팅·기타')),
@@ -154,11 +191,7 @@ $tf_menu = array(
         'visual' => 'sub/sub_visual/portfolio-hd.jpg',
         'lead'   => '더패스트가 완성한 공간을 소개합니다.',
         'sub'    => array(
-            array('key' => 'portfolio',       'title' => '전체',          'href' => tf_board_url($tf_boards['portfolio']), 'board' => $tf_boards['portfolio']),
-            array('key' => 'portfolio-home',  'title' => '주거공간 인테리어', 'href' => tf_board_url($tf_boards['portfolio'], '주거공간'), 'board' => $tf_boards['portfolio'], 'sca' => '주거공간'),
-            array('key' => 'portfolio-pub',   'title' => '관공서 인테리어',   'href' => tf_board_url($tf_boards['portfolio'], '관공서'),   'board' => $tf_boards['portfolio'], 'sca' => '관공서'),
-            array('key' => 'portfolio-biz',   'title' => '상업시설 인테리어', 'href' => tf_board_url($tf_boards['portfolio'], '상업시설'), 'board' => $tf_boards['portfolio'], 'sca' => '상업시설'),
-            array('key' => 'portfolio-etc',   'title' => '기타 시공',        'href' => tf_board_url($tf_boards['portfolio'], '기타시공'), 'board' => $tf_boards['portfolio'], 'sca' => '기타시공'),
+            /* 하위 메뉴는 아래 "시공사례 하위 메뉴" 코드에서 게시판 분류로 자동 생성 */
         ),
     ),
     'review' => array(
@@ -183,6 +216,21 @@ $tf_menu = array(
         ),
     ),
 );
+
+/* 시공사례 하위 메뉴: 전체 + 게시판 분류 */
+$tf_menu['portfolio']['sub'] = array(
+    array('key' => 'portfolio', 'title' => $tf_portfolio_cates ? '전체' : '시공사례', 'href' => tf_board_url($tf_boards['portfolio']), 'board' => $tf_boards['portfolio']),
+);
+foreach ($tf_portfolio_cates as $tf_i => $tf_c) {
+    $tf_menu['portfolio']['sub'][] = array(
+        'key'   => 'portfolio-'.($tf_i + 1),
+        'title' => isset($tf_portfolio_labels[$tf_c]) ? $tf_portfolio_labels[$tf_c] : $tf_c,
+        'href'  => tf_board_url($tf_boards['portfolio'], $tf_c),
+        'board' => $tf_boards['portfolio'],
+        'sca'   => $tf_c,
+    );
+}
+unset($tf_i, $tf_c);
 
 /* 상담문의 바로가기 (헤더 버튼 / CTA) */
 $tf_inquiry_url = G5_BBS_URL.'/write.php?bo_table='.$tf_boards['inquiry'];

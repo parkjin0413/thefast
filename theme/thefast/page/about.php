@@ -73,15 +73,15 @@ include_once(G5_THEME_PATH.'/inc/tf.lib.php');
             <a href="<?php echo tf_board_url($tf_boards['portfolio']); ?>" class="tf-link tf-reveal">시공사례 보기 <span aria-hidden="true">→</span></a>
         </div>
         <div class="tf-biz">
-            <a href="<?php echo tf_board_url($tf_boards['portfolio'], '주거공간'); ?>" class="tf-biz__item tf-reveal">
+            <a href="<?php echo tf_portfolio_url('주거공간'); ?>" class="tf-biz__item tf-reveal">
                 <img src="<?php echo tf_img('main/visual_slide/bg01.jpg'); ?>" alt="" width="800" height="1000" loading="lazy">
                 <div class="tf-biz__body"><h3>주거공간</h3><p>아파트 · 단독주택 · 빌라 · 욕실 · 주방</p></div>
             </a>
-            <a href="<?php echo tf_board_url($tf_boards['portfolio'], '관공서'); ?>" class="tf-biz__item tf-reveal" data-delay="1">
+            <a href="<?php echo tf_portfolio_url('관공서'); ?>" class="tf-biz__item tf-reveal" data-delay="1">
                 <img src="<?php echo tf_img('main/pd-img03.jpg'); ?>" alt="" width="800" height="1000" loading="lazy">
                 <div class="tf-biz__body"><h3>관공서 · 교육시설</h3><p>관공서 · 학교 · 어린이집 · 병원 · 강당</p></div>
             </a>
-            <a href="<?php echo tf_board_url($tf_boards['portfolio'], '상업시설'); ?>" class="tf-biz__item tf-reveal" data-delay="2">
+            <a href="<?php echo tf_portfolio_url('상업시설'); ?>" class="tf-biz__item tf-reveal" data-delay="2">
                 <img src="<?php echo tf_img('sub/sub_visual/portfolio-hd.jpg'); ?>" alt="" width="800" height="1000" loading="lazy">
                 <div class="tf-biz__body"><h3>상업시설</h3><p>카페 · 매장 · 사무실 · 피트니스센터</p></div>
             </a>
