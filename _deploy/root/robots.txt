@@ -1,0 +1,11 @@
+User-agent: *
+Allow: /
+Disallow: /adm/
+Disallow: /bbs/login.php
+Disallow: /bbs/register
+Disallow: /bbs/password
+Disallow: /bbs/write.php
+Disallow: /bbs/search.php
+Disallow: /data/session/
+
+Sitemap: https://www.thefast21.com/sitemap.php

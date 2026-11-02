@@ -1,0 +1,37 @@
+# =====================================================================
+# 기존 홈페이지(.html) 주소 → 새 그누보드 주소 301 영구 이동
+# 네이버/구글에 등록된 기존 주소의 검색 순위를 새 주소로 넘겨줍니다.
+#
+# 사용법: 사이트 루트의 .htaccess 맨 위(그누보드 짧은주소 규칙보다 위)에 붙여넣기
+#   * 아래는 _deploy/root/ 의 짧은 주소 파일을 올리고 site.config.php 에서
+#     TF_ROOT_PAGES 를 true 로 바꾼 경우 기준입니다.
+#     짧은 주소를 쓰지 않으면 /about.php 를 /theme/thefast/page/about.php 처럼 바꾸세요.
+# =====================================================================
+<IfModule mod_rewrite.c>
+RewriteEngine On
+
+# www 로 통일 (필요 없으면 두 줄 삭제)
+RewriteCond %{HTTP_HOST} ^thefast21\.com$ [NC]
+RewriteRule ^(.*)$ https://www.thefast21.com/$1 [R=301,L]
+
+RewriteRule ^index\.html$                 /                                         [R=301,L]
+RewriteRule ^sub_process\.html$           /process.php                              [R=301,L]
+RewriteRule ^sub_history\.html$           /bbs/board.php?bo_table=history           [R=301,L]
+RewriteRule ^sub_news\.html$              /bbs/board.php?bo_table=news              [R=301,L]
+RewriteRule ^sub_location\.html$          /location.php                             [R=301,L]
+RewriteRule ^product01\.html$             /product.php?type=wall                    [R=301,L]
+RewriteRule ^product02\.html$             /product.php?type=floor                   [R=301,L]
+RewriteRule ^product03\.html$             /product.php?type=ceiling                 [R=301,L]
+RewriteRule ^sub_event\.html$             /bbs/board.php?bo_table=event             [R=301,L]
+RewriteRule ^sub_review\.html$            /bbs/board.php?bo_table=review            [R=301,L]
+RewriteRule ^sub_portfolio01\.html$       /bbs/board.php?bo_table=portfolio&sca=%EC%A3%BC%EA%B1%B0%EA%B3%B5%EA%B0%84 [R=301,L,NE,QSD]
+RewriteRule ^sub_portfolio02\.html$       /bbs/board.php?bo_table=portfolio&sca=%EA%B4%80%EA%B3%B5%EC%84%9C [R=301,L,NE,QSD]
+RewriteRule ^sub_portfolio03\.html$       /bbs/board.php?bo_table=portfolio&sca=%EC%83%81%EC%97%85%EC%8B%9C%EC%84%A4 [R=301,L,NE,QSD]
+RewriteRule ^sub_portfolio04\.html$       /bbs/board.php?bo_table=portfolio&sca=%EA%B8%B0%ED%83%80%EC%8B%9C%EA%B3%B5 [R=301,L,NE,QSD]
+RewriteRule ^sub_bizpartner\.html$        /bbs/board.php?bo_table=partner           [R=301,L]
+RewriteRule ^sub_inquiry\.html$           /bbs/board.php?bo_table=inquiry           [R=301,L]
+RewriteRule ^sub_faq\.html$               /bbs/faq.php                              [R=301,L]
+RewriteRule ^access_terms\.html$          /bbs/content.php?co_id=provision          [R=301,L]
+RewriteRule ^privacy_policy\.html$        /bbs/content.php?co_id=privacy            [R=301,L]
+RewriteRule ^sub_mypage\.html$            /bbs/login.php                            [R=301,L]
+</IfModule>
