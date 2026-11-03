@@ -20,27 +20,32 @@ if (count($tf_portfolio) >= 4) {
 $tf_reviews   = $tf_has_review ? tf_latest_posts($tf_boards['review'], 5) : array();
 $tf_news      = $tf_has_news ? tf_latest_posts($tf_boards['news'], 5) : array();
 
-$tf_slides = array(
-    array('src' => 'main/visual_slide/bg01.jpg', 'alt' => '우드 아트월과 화이트 톤으로 리모델링한 거실'),
-    array('src' => 'main/visual_slide/bg02.jpg', 'alt' => '밝은 화이트 톤으로 리모델링한 거실과 주방'),
-    array('src' => 'main/visual_slide/bg03.jpg', 'alt' => '라미네이트 판넬로 마감한 다이닝 공간'),
-    array('src' => 'main/visual_slide/bg04.jpg', 'alt' => '브라운 라미네이트 벽면으로 시공한 다이닝 룸'),
+/*
+ * 메인 영상 (AI 연출 영상) — 파일만 바꾸면 교체됩니다. (theme/thefast/ 기준 경로)
+ * desktop: PC용 1080p / mobile: 휴대폰용 720p / poster: 영상이 뜨기 전 첫 장면
+ * 소리 없이 자동재생되며, 1번 → 2번 → 1번 순서로 이어서 재생합니다.
+ */
+$tf_videos = array(
+    array('desktop' => 'video/hero1-1080.mp4', 'mobile' => 'video/hero1-720.mp4', 'poster' => 'img/main/hero1-poster.jpg'),
+    array('desktop' => 'video/hero2-1080.mp4', 'mobile' => 'video/hero2-720.mp4', 'poster' => 'img/main/hero2-poster.jpg'),
 );
+// 움직임 줄이기 설정·데이터 절약 모드에서는 영상 대신 이 이미지를 보여줍니다.
+$tf_hero_static = 'img/main/hero-static.jpg';
 ?>
 
-<!-- 히어로 -->
-<section class="tf-hero" aria-roledescription="carousel" aria-label="더패스트 대표 시공 이미지">
-    <div class="tf-hero__slides">
-        <?php foreach ($tf_slides as $i => $s) { ?>
-        <div class="tf-hero__slide<?php echo $i === 0 ? ' is-active' : ''; ?>" role="group" aria-roledescription="slide" aria-label="<?php echo ($i + 1).' / '.count($tf_slides); ?>"<?php echo $i ? ' aria-hidden="true"' : ''; ?>>
-            <?php if ($i === 0) { ?>
-            <img src="<?php echo tf_img($s['src']); ?>" alt="<?php echo $s['alt']; ?>" width="1920" height="1080" fetchpriority="high">
-            <?php } else { ?>
-            <img data-src="<?php echo tf_img($s['src']); ?>" src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" alt="<?php echo $s['alt']; ?>" width="1920" height="1080">
-            <?php } ?>
+<!-- 히어로 (연출 영상) -->
+<section class="tf-hero" aria-label="더패스트 메인 영상" style="--tf-hero-static:url('<?php echo G5_THEME_URL.'/'.$tf_hero_static; ?>')">
+    <div class="tf-hero__slides" aria-hidden="true">
+        <?php foreach ($tf_videos as $i => $v) { ?>
+        <div class="tf-hero__slide<?php echo $i === 0 ? ' is-active' : ''; ?>">
+            <video class="tf-hero__video" muted playsinline disablepictureinpicture disableremoteplayback preload="none" tabindex="-1"
+                poster="<?php echo G5_THEME_URL.'/'.$v['poster']; ?>"
+                data-src-desktop="<?php echo G5_THEME_URL.'/'.$v['desktop']; ?>"
+                data-src-mobile="<?php echo G5_THEME_URL.'/'.$v['mobile']; ?>"></video>
         </div>
         <?php } ?>
     </div>
+    <p class="tf-hero__note">연출 영상</p>
 
     <div class="tf-inner tf-hero__body">
         <p class="tf-hero__kicker"><i aria-hidden="true"></i>건식 리모델링 전문 · Swifter &amp; Quieter</p>
@@ -61,11 +66,11 @@ $tf_slides = array(
     </div>
 
     <div class="tf-hero__ctrl">
-        <span class="tf-hero__count" aria-live="off">01 / <?php printf('%02d', count($tf_slides)); ?></span>
+        <span class="tf-hero__count" aria-live="off">01 / <?php printf('%02d', count($tf_videos)); ?></span>
         <span class="tf-hero__bar" aria-hidden="true"><i></i></span>
-        <button type="button" class="tf-hero__btn tf-hero__prev" aria-label="이전 슬라이드"><span aria-hidden="true">&#8249;</span></button>
-        <button type="button" class="tf-hero__btn tf-hero__toggle" aria-label="슬라이드 자동재생 정지"><span aria-hidden="true">&#10074;&#10074;</span></button>
-        <button type="button" class="tf-hero__btn tf-hero__next" aria-label="다음 슬라이드"><span aria-hidden="true">&#8250;</span></button>
+        <button type="button" class="tf-hero__btn tf-hero__prev" aria-label="이전 영상"><span aria-hidden="true">&#8249;</span></button>
+        <button type="button" class="tf-hero__btn tf-hero__toggle" aria-label="영상 정지"><span aria-hidden="true">&#10074;&#10074;</span></button>
+        <button type="button" class="tf-hero__btn tf-hero__next" aria-label="다음 영상"><span aria-hidden="true">&#8250;</span></button>
     </div>
     <span class="tf-hero__scroll" aria-hidden="true"></span>
 </section>

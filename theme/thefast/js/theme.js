@@ -102,60 +102,90 @@
         });
     });
 
-    /* ---------- 메인 히어로 슬라이드 ---------- */
+    /* ---------- 메인 히어로 영상 (1번 → 2번 → 1번 … 이어서 재생) ---------- */
     var hero = $('.tf-hero');
     if (hero) {
         var slides = $$('.tf-hero__slide', hero);
+        var vids = slides.map(function (s) { return $('video', s); });
         var cur = 0;
-        var timer = null;
-        var DURATION = 6000;
+        var paused = false;
         var bar = $('.tf-hero__bar i', hero);
         var counter = $('.tf-hero__count', hero);
         var toggle = $('.tf-hero__toggle', hero);
-        var paused = reduceMotion;
+        var conn = navigator.connection || {};
+        // 움직임 줄이기 · 데이터 절약 모드 · 영상 미지원이면 정지 이미지만 표시
+        var canVideo = vids.length && vids[0] && typeof vids[0].play === 'function' && !reduceMotion && !conn.saveData;
+        var isMobile = window.matchMedia && window.matchMedia('(max-width: 767px)').matches;
+        var inView = true;
 
-        function lazy(slide) {
-            var img = $('img[data-src]', slide);
-            if (img) { img.src = img.getAttribute('data-src'); img.removeAttribute('data-src'); }
+        function load(i) {
+            var v = vids[i];
+            if (!v || v.getAttribute('src')) return;
+            v.src = v.getAttribute(isMobile ? 'data-src-mobile' : 'data-src-desktop');
+            v.preload = 'auto';
+            v.load();
+        }
+        function playCur() {
+            if (paused || !inView || doc.hidden) return;
+            var p = vids[cur].play();
+            if (p && p.catch) p.catch(function () { /* 자동재생이 막히면 첫 장면(포스터)을 그대로 보여줌 */ });
+        }
+        function setBar() {
+            if (!bar) return;
+            var v = vids[cur];
+            var r = v.duration ? Math.min(1, v.currentTime / v.duration) : 0;
+            bar.style.transform = 'scaleX(' + r + ')';
         }
         function show(n) {
-            slides[cur].classList.remove('is-active');
-            slides[cur].setAttribute('aria-hidden', 'true');
+            var prev = cur;
             cur = (n + slides.length) % slides.length;
-            lazy(slides[cur]);
-            lazy(slides[(cur + 1) % slides.length]);
-            slides[cur].classList.add('is-active');
-            slides[cur].removeAttribute('aria-hidden');
+            load(cur);
+            if (prev !== cur) {
+                slides[prev].classList.remove('is-active');
+                slides[cur].classList.add('is-active');
+                setTimeout(function () { if (cur !== prev) vids[prev].pause(); }, 1300); // 겹쳐서 넘어간 뒤 이전 영상 정지
+            }
+            try { vids[cur].currentTime = 0; } catch (e) {}
             if (counter) counter.textContent = ('0' + (cur + 1)).slice(-2) + ' / ' + ('0' + slides.length).slice(-2);
-            restartBar();
-        }
-        function restartBar() {
-            if (!bar) return;
-            bar.classList.remove('is-run');
-            void bar.offsetWidth; // 리플로우로 애니메이션 재시작
-            if (!paused) bar.classList.add('is-run');
-        }
-        function play() {
-            clearInterval(timer);
-            if (paused || slides.length < 2) return;
-            timer = setInterval(function () { show(cur + 1); }, DURATION);
+            setBar();
+            playCur();
         }
         function setPaused(p) {
             paused = p;
             hero.classList.toggle('is-paused', p);
             if (toggle) {
-                toggle.setAttribute('aria-label', p ? '슬라이드 자동재생 시작' : '슬라이드 자동재생 정지');
+                toggle.setAttribute('aria-label', p ? '영상 재생' : '영상 정지');
                 toggle.innerHTML = p ? '<span aria-hidden="true">&#9654;</span>' : '<span aria-hidden="true">&#10074;&#10074;</span>';
             }
-            if (p) { clearInterval(timer); bar && bar.classList.remove('is-run'); } else { restartBar(); play(); }
+            if (p) vids[cur].pause(); else playCur();
         }
-        if (slides.length) {
-            lazy(slides[1 % slides.length]);
-            $('.tf-hero__prev', hero) && $('.tf-hero__prev', hero).addEventListener('click', function () { show(cur - 1); play(); });
-            $('.tf-hero__next', hero) && $('.tf-hero__next', hero).addEventListener('click', function () { show(cur + 1); play(); });
+
+        if (!canVideo) {
+            hero.classList.add('is-static');
+        } else {
+            vids.forEach(function (v, i) {
+                v.muted = true; // iOS 자동재생 조건
+                v.addEventListener('ended', function () { if (i === cur) show(cur + 1); });
+                v.addEventListener('timeupdate', function () {
+                    if (i !== cur) return;
+                    setBar();
+                    // 절반쯤 재생되면 다음 영상을 미리 불러옴
+                    if (v.duration && v.currentTime > v.duration / 2) load((cur + 1) % vids.length);
+                });
+                v.addEventListener('playing', function () { if (i === cur) hero.classList.add('is-playing'); });
+            });
+            $('.tf-hero__prev', hero) && $('.tf-hero__prev', hero).addEventListener('click', function () { show(cur - 1); });
+            $('.tf-hero__next', hero) && $('.tf-hero__next', hero).addEventListener('click', function () { show(cur + 1); });
             toggle && toggle.addEventListener('click', function () { setPaused(!paused); });
-            setPaused(paused);
-            doc.addEventListener('visibilitychange', function () { if (doc.hidden) clearInterval(timer); else play(); });
+            doc.addEventListener('visibilitychange', function () { if (doc.hidden) vids[cur].pause(); else playCur(); });
+            // 화면 밖으로 스크롤하면 정지 (배터리·데이터 절약)
+            if ('IntersectionObserver' in window) {
+                new IntersectionObserver(function (en) {
+                    inView = en[0].isIntersecting;
+                    if (inView) playCur(); else vids[cur].pause();
+                }, { threshold: 0.05 }).observe(hero);
+            }
+            show(0);
         }
     }
 

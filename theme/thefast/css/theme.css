@@ -217,10 +217,14 @@ body:has(.tf-lnb) .tf-header.is-scrolled ~ .tf-lnb, .tf-lnb.is-stuck { box-shado
 /* 히어로 */
 .tf-hero { position: relative; height: 100vh; height: 100svh; min-height: 640px; max-height: 1080px; overflow: hidden; color: #fff; background: var(--tf-navy-deep); }
 .tf-hero__slides { position: absolute; inset: 0; }
-.tf-hero__slide { position: absolute; inset: 0; opacity: 0; transition: opacity 1.4s ease; }
+.tf-hero__slide { position: absolute; inset: 0; opacity: 0; transition: opacity 1.2s ease; }
 .tf-hero__slide.is-active { opacity: 1; }
-.tf-hero__slide img { width: 100%; height: 100%; object-fit: cover; transform: scale(1.12); }
-.tf-hero__slide.is-active img { animation: tfKenburns 9s linear forwards; }
+.tf-hero__video { display: block; width: 100%; height: 100%; object-fit: cover; background: var(--tf-navy-deep); }
+/* 정지 이미지는 영상을 쓰지 않을 때만 불러옴 (배경 이미지는 적용될 때만 다운로드됨) */
+.tf-hero.is-static { background: var(--tf-navy-deep) var(--tf-hero-static) center / cover no-repeat; }
+.tf-hero.is-static .tf-hero__slides, .tf-hero.is-static .tf-hero__ctrl { display: none; }
+/* "연출 영상" 표시 — 아주 작게 */
+.tf-hero__note { position: absolute; z-index: 3; right: var(--tf-gutter); top: calc(var(--tf-header-h) + 14px); margin: 0; font-size: 11px; letter-spacing: .02em; color: rgba(255,255,255,.82); text-shadow: 0 1px 2px rgba(0,0,0,.4); }
 .tf-hero::after { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(14,15,32,.55) 0%, rgba(14,15,32,.15) 35%, rgba(14,15,32,.25) 60%, rgba(14,15,32,.8) 100%); pointer-events: none; }
 .tf-hero__body { position: relative; z-index: 2; display: flex; flex-direction: column; justify-content: flex-end; height: 100%; padding-bottom: clamp(96px, 13vh, 150px); }
 .tf-hero__kicker { display: inline-flex; align-items: center; gap: 12px; margin: 0 0 24px; font-size: 14px; font-weight: 600; letter-spacing: .18em; text-transform: uppercase; color: rgba(255,255,255,.85); }
@@ -234,9 +238,7 @@ body:has(.tf-lnb) .tf-header.is-scrolled ~ .tf-lnb, .tf-lnb.is-stuck { box-shado
 .tf-hero__actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 40px; }
 .tf-hero__ctrl { position: absolute; z-index: 3; right: var(--tf-gutter); bottom: clamp(40px, 6vh, 64px); display: flex; align-items: center; gap: 16px; font-size: 14px; font-variant-numeric: tabular-nums; color: rgba(255,255,255,.8); }
 .tf-hero__bar { position: relative; width: 120px; height: 2px; background: rgba(255,255,255,.25); overflow: hidden; }
-.tf-hero__bar i { position: absolute; inset: 0; background: #fff; transform: scaleX(0); transform-origin: left; }
-.tf-hero__bar i.is-run { animation: tfBar 6s linear forwards; }
-.tf-hero.is-paused .tf-hero__bar i { animation-play-state: paused; }
+.tf-hero__bar i { position: absolute; inset: 0; background: #fff; transform: scaleX(0); transform-origin: left; transition: transform .25s linear; }
 .tf-hero__btn { display: grid; place-items: center; width: 40px; height: 40px; border: 1px solid rgba(255,255,255,.35); border-radius: 50%; color: #fff; cursor: pointer; transition: background-color .2s; }
 .tf-hero__btn:hover { background: rgba(255,255,255,.12); }
 .tf-hero__scroll { position: absolute; z-index: 3; left: 50%; bottom: 24px; width: 1px; height: 48px; background: rgba(255,255,255,.3); overflow: hidden; }
