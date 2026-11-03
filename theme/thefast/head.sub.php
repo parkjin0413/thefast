@@ -3,7 +3,7 @@
 if (!defined('_GNUBOARD_')) exit; // 개별 페이지 접근 불가
 
 // alert() 등 함수 안에서 include 되는 경우를 위해 전역으로 묶어 둡니다.
-global $tf_site, $tf_seo, $tf_menu, $tf_boards, $tf_board_fields, $tf_portfolio_cates, $tf_portfolio_labels, $tf_inquiry_url, $tf_current, $tf_meta;
+global $tf_site, $tf_seo, $tf_licenses, $tf_certs, $tf_menu, $tf_boards, $tf_board_fields, $tf_portfolio_cates, $tf_portfolio_labels, $tf_inquiry_url, $tf_current, $tf_meta;
 include_once(G5_THEME_PATH.'/site.config.php');
 
 $g5_debug['php']['begin_time'] = $begin_time = get_microtime();

@@ -679,3 +679,52 @@ body:has(.tf-lnb) .tf-header.is-scrolled ~ .tf-lnb, .tf-lnb.is-stuck { box-shado
     .tf-space-points, .tf-space-other { grid-template-columns: 1fr; }
     .tf-space-pain__list li { font-size: 16px; padding: 18px; }
 }
+
+
+/* =====================================================================
+   면허·인증
+   ===================================================================== */
+/* 메인 신뢰 띠 */
+.tf-trust { padding: 28px 0; background: #fff; border-top: 1px solid var(--tf-line); border-bottom: 1px solid var(--tf-line); }
+.tf-trust__inner { display: flex; flex-wrap: wrap; align-items: center; gap: 14px 32px; }
+.tf-trust__lead { margin: 0; font-size: 16px; font-weight: 700; color: var(--tf-ink); }
+.tf-trust__list { display: flex; flex-wrap: wrap; gap: 8px 10px; flex: 1; }
+.tf-trust__list li { display: inline-flex; align-items: center; gap: 6px; height: 36px; padding: 0 14px; border-radius: 999px; background: var(--tf-stone); font-size: 14px; font-weight: 600; color: var(--tf-navy); }
+.tf-trust__list svg { flex: none; color: var(--tf-red-text); }
+.tf-trust .tf-link { font-size: 15px; }
+@media (max-width: 860px) {
+    .tf-trust__inner { flex-direction: column; align-items: flex-start; }
+}
+
+/* 회사소개: 면허 카드 */
+.tf-lic { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+.tf-lic__item { display: flex; flex-direction: column; padding: 28px 24px; border-radius: var(--tf-radius); background: #fff; border: 1px solid var(--tf-line); }
+.tf-lic__item--cert { background: var(--tf-stone); border-color: var(--tf-stone-2); }
+.tf-lic__type { align-self: flex-start; display: inline-flex; height: 26px; align-items: center; padding: 0 10px; border-radius: 999px; background: var(--tf-navy); color: #fff; font-size: 12px; font-weight: 700; }
+.tf-lic__item--cert .tf-lic__type { background: var(--tf-red); }
+.tf-lic__name { margin: 16px 0 8px; font-size: 20px; line-height: 1.35; word-break: keep-all; }
+.tf-lic__desc { margin: 0 0 20px; font-size: 15px; color: var(--tf-muted); line-height: 1.6; }
+.tf-lic__meta { margin: auto 0 0; padding: 16px 0 0; border-top: 1px solid var(--tf-line); display: grid; gap: 6px; }
+.tf-lic__meta div { display: grid; grid-template-columns: 64px 1fr; gap: 8px; font-size: 14px; }
+.tf-lic__meta dt { color: var(--tf-muted); }
+.tf-lic__meta dd { margin: 0; color: var(--tf-ink); font-weight: 600; font-variant-numeric: tabular-nums; }
+.tf-lic__note { margin: 20px 0 0; font-size: 14px; color: var(--tf-muted); line-height: 1.7; }
+.tf-lic__note a { color: var(--tf-navy); text-decoration: underline; text-underline-offset: 3px; }
+
+/* 기관·기업 담당자 안내 */
+.tf-org { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 24px 40px; margin-top: 40px; padding: clamp(28px, 4vw, 44px); border-radius: var(--tf-radius-lg); background: var(--tf-navy); color: rgba(255,255,255,.85); }
+.tf-org > div:first-child { flex: 1 1 480px; }
+.tf-org__title { margin: 0 0 10px; font-size: clamp(20px, 2vw, 24px); color: #fff; }
+.tf-org p { margin: 0; font-size: 16px; line-height: 1.75; }
+.tf-org strong { color: #fff; }
+.tf-org__actions { display: flex; flex-wrap: wrap; gap: 10px; }
+
+@media (max-width: 1100px) { .tf-lic { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 640px) {
+    .tf-lic { grid-template-columns: 1fr; }
+    .tf-org__actions { width: 100%; }
+    .tf-org__actions .tf-btn { flex: 1 1 100%; }
+}
+
+/* 앵커(#license 등)로 이동할 때 고정 헤더·서브 탭에 제목이 가리지 않도록 */
+.tf-section[id] { scroll-margin-top: calc(var(--tf-header-h) + 64px); }

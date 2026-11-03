@@ -156,6 +156,22 @@ $tf_slides = array(
     </div>
 </section>
 
+<!-- 면허·인증 신뢰 띠 -->
+<section class="tf-trust" aria-label="면허 및 인증">
+    <div class="tf-inner tf-trust__inner">
+        <p class="tf-trust__lead">면허를 갖춘 인테리어 시공 회사</p>
+        <ul class="tf-trust__list">
+            <?php foreach ($tf_licenses as $l) { ?>
+            <li><svg aria-hidden="true" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg><?php echo $l['name']; ?> 면허</li>
+            <?php } ?>
+            <?php foreach (tf_active_certs() as $c) { ?>
+            <li><svg aria-hidden="true" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="9" r="6"/><path d="m8.5 14.5-1.5 7.5 5-3 5 3-1.5-7.5"/></svg><?php echo $c['name']; ?></li>
+            <?php } ?>
+        </ul>
+        <a href="<?php echo tf_page_url('about'); ?>#license" class="tf-link">면허·인증 보기 <span aria-hidden="true">→</span></a>
+    </div>
+</section>
+
 <!-- 더패스트 공법 -->
 <section class="tf-section" aria-labelledby="tfIntroTitle">
     <div class="tf-inner tf-intro">

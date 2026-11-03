@@ -1,7 +1,7 @@
 <?php
 if (!defined('_GNUBOARD_')) exit; // 개별 페이지 접근 불가
 
-global $tf_site, $tf_menu, $tf_boards, $tf_inquiry_url, $tf_has_inquiry, $tf_current, $tf_full;
+global $tf_site, $tf_menu, $tf_boards, $tf_inquiry_url, $tf_has_inquiry, $tf_current, $tf_full, $tf_licenses;
 
 // 상담/제휴 문의 화면에서는 하단 CTA 를 숨깁니다.
 $tf_hide_cta = in_array($tf_current, array('inquiry', 'partner'), true);
@@ -71,7 +71,8 @@ $tf_hide_cta = in_array($tf_current, array('inquiry', 'partner'), true);
             <address class="tf-footer__info">
                 <span><?php echo $tf_site['corp']; ?></span>
                 <span>대표 <?php echo $tf_site['ceo']; ?></span>
-                <span>사업자등록번호 <?php echo $tf_site['biz_no']; ?></span><br class="tf-br-pc">
+                <span>사업자등록번호 <?php echo $tf_site['biz_no']; ?></span>
+                <span>건설업 <?php echo implode(" · ", array_column($tf_licenses, "name")); ?><?php echo tf_active_certs() ? " / 여성기업" : ""; ?></span><br class="tf-br-pc">
                 <span><?php echo $tf_site['addr']; ?></span>
                 <span>대표번호 <?php echo $tf_site['tel_label']; ?></span>
                 <span>이메일 <a href="mailto:<?php echo $tf_site['email']; ?>"><?php echo $tf_site['email']; ?></a></span>
