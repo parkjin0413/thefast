@@ -109,7 +109,7 @@
         var vids = slides.map(function (s) { return $('video', s); });
         var cur = 0;
         var paused = false;
-        var bar = $('.tf-hero__bar i', hero);
+        var segs = $$('.tf-hero__seg', hero);
         var counter = $('.tf-hero__count', hero);
         var toggle = $('.tf-hero__toggle', hero);
         var conn = navigator.connection || {};
@@ -131,10 +131,12 @@
             if (p && p.catch) p.catch(function () { /* 자동재생이 막히면 첫 장면(포스터)을 그대로 보여줌 */ });
         }
         function setBar() {
-            if (!bar) return;
             var v = vids[cur];
             var r = v.duration ? Math.min(1, v.currentTime / v.duration) : 0;
-            bar.style.transform = 'scaleX(' + r + ')';
+            segs.forEach(function (sg, i) {
+                var bar = sg.firstElementChild;
+                if (bar) bar.style.transform = 'scaleX(' + (i === cur ? r : 0) + ')';
+            });
         }
         function show(n) {
             var prev = cur;
@@ -147,6 +149,10 @@
             }
             try { vids[cur].currentTime = 0; } catch (e) {}
             if (counter) counter.textContent = ('0' + (cur + 1)).slice(-2) + ' / ' + ('0' + slides.length).slice(-2);
+            segs.forEach(function (sg, i) {
+                sg.classList.toggle('is-active', i === cur);
+                if (i === cur) sg.setAttribute('aria-current', 'true'); else sg.removeAttribute('aria-current');
+            });
             setBar();
             playCur();
         }
@@ -162,6 +168,9 @@
 
         if (!canVideo) {
             hero.classList.add('is-static');
+            if ('IntersectionObserver' in window) {
+                new IntersectionObserver(function (en) { body.classList.toggle('tf-in-hero', en[0].isIntersecting); }, { threshold: 0.05 }).observe(hero);
+            }
         } else {
             vids.forEach(function (v, i) {
                 v.muted = true; // iOS 자동재생 조건
@@ -174,8 +183,7 @@
                 });
                 v.addEventListener('playing', function () { if (i === cur) hero.classList.add('is-playing'); });
             });
-            $('.tf-hero__prev', hero) && $('.tf-hero__prev', hero).addEventListener('click', function () { show(cur - 1); });
-            $('.tf-hero__next', hero) && $('.tf-hero__next', hero).addEventListener('click', function () { show(cur + 1); });
+            segs.forEach(function (sg, i) { sg.addEventListener('click', function () { show(i); }); });
             toggle && toggle.addEventListener('click', function () { setPaused(!paused); });
             doc.addEventListener('visibilitychange', function () { if (doc.hidden) vids[cur].pause(); else playCur(); });
             // 화면 밖으로 스크롤하면 정지 (배터리·데이터 절약)
@@ -183,6 +191,7 @@
                 new IntersectionObserver(function (en) {
                     inView = en[0].isIntersecting;
                     if (inView) playCur(); else vids[cur].pause();
+                    body.classList.toggle('tf-in-hero', inView);
                 }, { threshold: 0.05 }).observe(hero);
             }
             show(0);

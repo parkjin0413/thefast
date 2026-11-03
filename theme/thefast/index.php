@@ -48,31 +48,36 @@ $tf_hero_static = 'img/main/hero-static.jpg';
     <p class="tf-hero__note">연출 영상</p>
 
     <div class="tf-inner tf-hero__body">
-        <p class="tf-hero__kicker"><i aria-hidden="true"></i>건식 리모델링 전문 · Swifter &amp; Quieter</p>
-        <h1 class="tf-hero__title tf-hero__title--ko">
-            <span class="tf-hero__ko">더패스트 인테리어</span>
-            <span>살면서 하는 리모델링,</span>
-            <span>빠르고 <em>조용하게.</em></span>
+        <h1 class="tf-hero__h1">
+            <span class="tf-hero__eyebrow tf-hero__in" style="--d:0"><i aria-hidden="true"></i>더패스트 인테리어<span class="tf-hero__en" aria-hidden="true">Swifter &amp; Quieter</span></span>
+            <span class="tf-hero__line"><span class="tf-hero__mask" style="--d:1">살면서 하는 리모델링,</span></span>
+            <span class="tf-hero__line"><span class="tf-hero__mask" style="--d:2">빠르고 조용하게<b class="tf-hero__dot" aria-hidden="true">.</b></span></span>
         </h1>
-        <p class="tf-hero__desc">철거와 소음은 줄이고 공사 기간은 짧게.<br>욕실·주방·거실을 새롭게 바꿔 드립니다.</p>
-        <div class="tf-hero__actions">
+        <p class="tf-hero__lead tf-hero__in" style="--d:3">철거와 소음은 줄이고 공사 기간은 짧게.<br class="tf-br-pc"> 욕실·주방·거실을 새롭게 바꿔 드립니다.</p>
+        <div class="tf-hero__actions tf-hero__in" style="--d:4">
             <a href="<?php echo $tf_inquiry_url; ?>" class="tf-btn tf-btn--primary tf-btn--lg">무료 견적 상담 <span aria-hidden="true">→</span></a>
             <?php if ($tf_has_portfolio) { ?>
-            <a href="<?php echo tf_portfolio_url(); ?>" class="tf-btn tf-btn--ghost tf-btn--lg">시공사례 보기</a>
+            <a href="<?php echo tf_portfolio_url(); ?>" class="tf-btn tf-btn--glass tf-btn--lg">시공사례 보기</a>
             <?php } else { ?>
-            <a href="<?php echo tf_page_url('space', 'type=bath'); ?>" class="tf-btn tf-btn--ghost tf-btn--lg">공간별 리모델링 보기</a>
+            <a href="<?php echo tf_page_url('space', 'type=bath'); ?>" class="tf-btn tf-btn--glass tf-btn--lg">공간별 리모델링 보기</a>
             <?php } ?>
         </div>
     </div>
 
-    <div class="tf-hero__ctrl">
-        <span class="tf-hero__count" aria-live="off">01 / <?php printf('%02d', count($tf_videos)); ?></span>
-        <span class="tf-hero__bar" aria-hidden="true"><i></i></span>
-        <button type="button" class="tf-hero__btn tf-hero__prev" aria-label="이전 영상"><span aria-hidden="true">&#8249;</span></button>
-        <button type="button" class="tf-hero__btn tf-hero__toggle" aria-label="영상 정지"><span aria-hidden="true">&#10074;&#10074;</span></button>
-        <button type="button" class="tf-hero__btn tf-hero__next" aria-label="다음 영상"><span aria-hidden="true">&#8250;</span></button>
+    <div class="tf-hero__foot">
+        <div class="tf-inner tf-hero__foot-inner">
+            <span class="tf-hero__cue" aria-hidden="true"><i></i>Scroll</span>
+            <div class="tf-hero__ctrl">
+                <span class="tf-hero__count" aria-live="off">01 / <?php printf('%02d', count($tf_videos)); ?></span>
+                <div class="tf-hero__segs">
+                    <?php foreach ($tf_videos as $i => $v) { ?>
+                    <button type="button" class="tf-hero__seg<?php echo $i === 0 ? ' is-active' : ''; ?>" aria-label="<?php echo $i + 1; ?>번 영상 보기"<?php echo $i === 0 ? ' aria-current="true"' : ''; ?>><i></i></button>
+                    <?php } ?>
+                </div>
+                <button type="button" class="tf-hero__btn tf-hero__toggle" aria-label="영상 정지"><span aria-hidden="true">&#10074;&#10074;</span></button>
+            </div>
+        </div>
     </div>
-    <span class="tf-hero__scroll" aria-hidden="true"></span>
 </section>
 
 <!-- 마퀴 -->
