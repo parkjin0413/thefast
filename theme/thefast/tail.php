@@ -30,7 +30,7 @@ $tf_hide_cta = in_array($tf_current, array('inquiry', 'partner'), true);
     <div class="tf-inner">
         <div class="tf-footer__top">
             <div class="tf-footer__brand">
-                <img src="<?php echo tf_img('logo_w.png'); ?>" alt="<?php echo $tf_site['name']; ?> THE FAST" width="180" height="54" loading="lazy">
+                <img src="<?php echo tf_img('logo_w.png'); ?>" alt="<?php echo $tf_site['name']; ?> THE FAST" width="181" height="40" loading="lazy">
                 <p><?php echo $tf_site['slogan']; ?></p>
                 <ul class="tf-sns" aria-label="더패스트 SNS">
                     <?php if ($tf_site['blog']) { ?><li><a href="<?php echo $tf_site['blog']; ?>" target="_blank" rel="noopener" title="새 창">네이버 블로그</a></li><?php } ?>

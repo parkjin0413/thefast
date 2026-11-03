@@ -29,8 +29,8 @@ $tf_en     = $tf_group ? $tf_group['en'] : 'THE FAST';
     <div class="tf-header__inner">
         <div class="tf-logo">
             <a href="<?php echo G5_URL; ?>/" aria-label="<?php echo $tf_site['name']; ?> <?php echo $tf_site['name_en']; ?> 홈으로">
-                <img src="<?php echo tf_img('logo.png'); ?>" alt="<?php echo $tf_site['name']; ?> THE FAST" width="200" height="60" class="tf-logo__dark">
-                <img src="<?php echo tf_img('logo_w.png'); ?>" alt="" width="200" height="60" class="tf-logo__light" aria-hidden="true">
+                <img src="<?php echo tf_img('logo.png'); ?>" alt="<?php echo $tf_site['name']; ?> THE FAST" width="181" height="40" class="tf-logo__dark">
+                <img src="<?php echo tf_img('logo_w.png'); ?>" alt="" width="181" height="40" class="tf-logo__light" aria-hidden="true">
             </a>
         </div>
 
@@ -74,7 +74,7 @@ $tf_en     = $tf_group ? $tf_group['en'] : 'THE FAST';
 <!-- 모바일 / 전체 메뉴 -->
 <div class="tf-drawer" id="tfDrawer" aria-label="전체 메뉴" role="dialog" aria-modal="true" hidden>
     <div class="tf-drawer__head">
-        <a href="<?php echo G5_URL; ?>/" class="tf-drawer__logo"><img src="<?php echo tf_img('logo.png'); ?>" alt="<?php echo $tf_site['name']; ?> 홈으로" width="160" height="48"></a>
+        <a href="<?php echo G5_URL; ?>/" class="tf-drawer__logo"><img src="<?php echo tf_img('logo.png'); ?>" alt="<?php echo $tf_site['name']; ?> 홈으로" width="145" height="32"></a>
         <button type="button" class="tf-drawer__close" id="tfDrawerClose"><span class="sound_only">전체 메뉴 닫기</span><span aria-hidden="true">&times;</span></button>
     </div>
     <nav class="tf-drawer__nav" aria-label="전체 메뉴">

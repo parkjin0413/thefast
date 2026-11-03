@@ -52,7 +52,7 @@ $tf_hero_static = 'img/main/hero-static.jpg';
         <div class="tf-hero__msgs">
             <div class="tf-hero__msg is-active">
                 <h1 class="tf-hero__h1">
-                    <span class="tf-hero__eyebrow tf-hero__in" style="--d:0"><i aria-hidden="true"></i>더패스트 인테리어<span class="tf-hero__en" aria-hidden="true">Swifter &amp; Quieter</span></span>
+                    <span class="tf-hero__eyebrow tf-hero__in" style="--d:0"><i aria-hidden="true"></i>더패스트 인테리어</span>
                     <span class="tf-hero__line"><span class="tf-hero__mask" style="--d:1">거주 중 리모델링도,</span></span>
                     <span class="tf-hero__line"><span class="tf-hero__mask" style="--d:2">빠르고 조용하게<b class="tf-hero__dot" aria-hidden="true">.</b></span></span>
                 </h1>
@@ -62,9 +62,9 @@ $tf_hero_static = 'img/main/hero-static.jpg';
                 <p class="tf-hero__h1">
                     <span class="tf-hero__eyebrow tf-hero__in" style="--d:0"><i aria-hidden="true"></i>건설업 면허 보유 시공사</span>
                     <span class="tf-hero__line"><span class="tf-hero__mask" style="--d:1">면허 갖춘 시공사,</span></span>
-                    <span class="tf-hero__line"><span class="tf-hero__mask" style="--d:2">믿고 맡기는 리모델링<b class="tf-hero__dot" aria-hidden="true">.</b></span></span>
+                    <span class="tf-hero__line"><span class="tf-hero__mask" style="--d:2">안전하게 맡기는 리모델링<b class="tf-hero__dot" aria-hidden="true">.</b></span></span>
                 </p>
-                <p class="tf-hero__lead tf-hero__in" style="--d:3">실내건축공사업을 포함한 건설업 면허 <?php echo count($tf_licenses); ?>종을<br class="tf-br-pc"> 등록한 인테리어 시공 회사입니다.</p>
+                <p class="tf-hero__lead tf-hero__in" style="--d:3">실내건축공사업을 포함한 건설업 면허 <?php echo count($tf_licenses); ?>종을 갖춘 시공사가<br class="tf-br-pc"> 안전한 공사를 책임집니다.</p>
                 <ul class="tf-hero__badges tf-hero__in" style="--d:4">
                     <li><?php echo $tf_licenses[0]['name']; ?> 면허</li>
                     <li>건설업 면허 <?php echo count($tf_licenses); ?>종</li>
@@ -101,9 +101,11 @@ $tf_hero_static = 'img/main/hero-static.jpg';
 <!-- 마퀴 -->
 <div class="tf-marquee" aria-hidden="true">
     <div class="tf-marquee__track">
-        <?php for ($k = 0; $k < 2; $k++) { ?>
-        <span>더패스트 인테리어</span><span>욕실 리모델링</span><span>주방 리모델링</span><span>거실 아트월</span><span>전체 리모델링</span><span>Swifter &amp; Quieter</span>
-        <?php } ?>
+        <?php
+        // 흘러가는 글자: 더패스트가 시공하는 인테리어 항목 (여기서 추가·수정)
+        $tf_marquee = array('아파트 리모델링', '욕실 리모델링', '주방 리모델링', '거실 아트월', '벽면 마감', '바닥재 시공', '천장 마감', '빌라·주택 리모델링', '홈시어터 흡음벽', '전체 리모델링');
+        for ($k = 0; $k < 2; $k++) { foreach ($tf_marquee as $w) { echo '<span>'.$w.'</span>'; } }
+        ?>
     </div>
 </div>
 
