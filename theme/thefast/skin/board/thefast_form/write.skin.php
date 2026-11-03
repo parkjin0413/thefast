@@ -155,9 +155,15 @@ set_session('ss_tf_form_'.$bo_table, time());
         <legend>개인정보 수집 및 이용 동의</legend>
         <div class="tf-agree">
             <dl class="tf-agree__box" tabindex="0" aria-label="개인정보 수집 및 이용 안내">
-                <dt>수집 항목</dt><dd>이름(담당자명), 연락처, 이메일(선택), 시공 지역 등 문의 시 입력한 정보</dd>
-                <dt>수집 목적</dt><dd><?php echo $tf_is_partner ? '제휴 제안 검토 및 회신' : '시공 상담, 견적 안내 및 현장 방문 일정 조율'; ?></dd>
-                <dt>보유 기간</dt><dd>상담 완료 후 1년 (관계 법령에 따라 보존할 필요가 있는 경우 해당 기간)</dd>
+                <?php if ($tf_is_partner) { ?>
+                <dt>수집 항목</dt><dd>(필수) 회사명, 담당자명, 연락처, 제휴 유형, 제안 내용, 비밀번호 / (선택) 이메일, 첨부파일</dd>
+                <dt>수집 목적</dt><dd>제휴 제안 검토 및 회신</dd>
+                <dt>보유 기간</dt><dd>검토 완료 후 1년</dd>
+                <?php } else { ?>
+                <dt>수집 항목</dt><dd>(필수) 이름, 연락처, 공간 유형, 상담 내용, 비밀번호 / (선택) 이메일, 시공 지역, 평수, 예산, 희망 시공 시기, 첨부 사진·도면</dd>
+                <dt>수집 목적</dt><dd>시공 상담, 견적 안내, 현장 방문 일정 조율 및 답변 회신</dd>
+                <dt>보유 기간</dt><dd>상담 완료 후 1년 (시공 계약을 체결한 경우 계약서 및 관계 법령에서 정한 기간)</dd>
+                <?php } ?>
                 <dd>동의를 거부할 수 있으며, 거부 시 상담 신청이 제한됩니다. 자세한 내용은 <a href="<?php echo get_pretty_url('content', 'privacy'); ?>" target="_blank" title="새 창">개인정보처리방침</a>을 확인해 주세요.</dd>
             </dl>
             <label class="tf-check" for="tf_agree"><input type="checkbox" name="tf_agree" id="tf_agree" value="1" required> 개인정보 수집 및 이용에 동의합니다. <span class="tf-req" aria-hidden="true">*</span><span class="sound_only">(필수)</span></label>
