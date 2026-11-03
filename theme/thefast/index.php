@@ -48,12 +48,30 @@ $tf_hero_static = 'img/main/hero-static.jpg';
     <p class="tf-hero__note">연출 영상</p>
 
     <div class="tf-inner tf-hero__body">
-        <h1 class="tf-hero__h1">
-            <span class="tf-hero__eyebrow tf-hero__in" style="--d:0"><i aria-hidden="true"></i>더패스트 인테리어<span class="tf-hero__en" aria-hidden="true">Swifter &amp; Quieter</span></span>
-            <span class="tf-hero__line"><span class="tf-hero__mask" style="--d:1">살면서 하는 리모델링,</span></span>
-            <span class="tf-hero__line"><span class="tf-hero__mask" style="--d:2">빠르고 조용하게<b class="tf-hero__dot" aria-hidden="true">.</b></span></span>
-        </h1>
-        <p class="tf-hero__lead tf-hero__in" style="--d:3">철거와 소음은 줄이고 공사 기간은 짧게.<br class="tf-br-pc"> 욕실·주방·거실을 새롭게 바꿔 드립니다.</p>
+        <!-- 문구 2세트: 영상 1·2와 함께 바뀜 (검색엔진용 대표 제목 h1 은 1번 문구) -->
+        <div class="tf-hero__msgs">
+            <div class="tf-hero__msg is-active">
+                <h1 class="tf-hero__h1">
+                    <span class="tf-hero__eyebrow tf-hero__in" style="--d:0"><i aria-hidden="true"></i>더패스트 인테리어<span class="tf-hero__en" aria-hidden="true">Swifter &amp; Quieter</span></span>
+                    <span class="tf-hero__line"><span class="tf-hero__mask" style="--d:1">거주 중 리모델링도,</span></span>
+                    <span class="tf-hero__line"><span class="tf-hero__mask" style="--d:2">빠르고 조용하게<b class="tf-hero__dot" aria-hidden="true">.</b></span></span>
+                </h1>
+                <p class="tf-hero__lead tf-hero__in" style="--d:3">철거와 소음은 줄이고 공사 기간은 짧게.<br class="tf-br-pc"> 욕실·주방·거실을 새롭게 바꿔 드립니다.</p>
+            </div>
+            <div class="tf-hero__msg">
+                <p class="tf-hero__h1">
+                    <span class="tf-hero__eyebrow tf-hero__in" style="--d:0"><i aria-hidden="true"></i>건설업 면허 보유 시공사</span>
+                    <span class="tf-hero__line"><span class="tf-hero__mask" style="--d:1">면허 갖춘 시공사,</span></span>
+                    <span class="tf-hero__line"><span class="tf-hero__mask" style="--d:2">믿고 맡기는 리모델링<b class="tf-hero__dot" aria-hidden="true">.</b></span></span>
+                </p>
+                <p class="tf-hero__lead tf-hero__in" style="--d:3">실내건축공사업을 포함한 건설업 면허 <?php echo count($tf_licenses); ?>종을<br class="tf-br-pc"> 등록한 인테리어 시공 회사입니다.</p>
+                <ul class="tf-hero__badges tf-hero__in" style="--d:4">
+                    <li><?php echo $tf_licenses[0]['name']; ?> 면허</li>
+                    <li>건설업 면허 <?php echo count($tf_licenses); ?>종</li>
+                    <?php if (tf_active_certs()) { ?><li>여성기업</li><?php } ?>
+                </ul>
+            </div>
+        </div>
         <div class="tf-hero__actions tf-hero__in" style="--d:4">
             <a href="<?php echo $tf_inquiry_url; ?>" class="tf-btn tf-btn--primary tf-btn--lg">무료 견적 상담 <span aria-hidden="true">→</span></a>
             <?php if ($tf_has_portfolio) { ?>

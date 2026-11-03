@@ -110,6 +110,20 @@
         var cur = 0;
         var paused = false;
         var segs = $$('.tf-hero__seg', hero);
+        var msgs = $$('.tf-hero__msg', hero);
+        // 문구 세트 전환: 이전 문구는 위로 빠지고 새 문구가 한 줄씩 올라옴
+        function setMsg(i) {
+            if (msgs.length < 2) return;
+            var target = msgs[i % msgs.length];
+            msgs.forEach(function (m) {
+                if (m === target || !m.classList.contains('is-active')) return;
+                m.classList.remove('is-active');
+                m.classList.add('is-leaving');
+                setTimeout(function () { m.classList.remove('is-leaving'); }, 700);
+            });
+            target.classList.remove('is-leaving');
+            target.classList.add('is-active');
+        }
         var counter = $('.tf-hero__count', hero);
         var toggle = $('.tf-hero__toggle', hero);
         var conn = navigator.connection || {};
@@ -146,6 +160,7 @@
                 slides[prev].classList.remove('is-active');
                 slides[cur].classList.add('is-active');
                 setTimeout(function () { if (cur !== prev) vids[prev].pause(); }, 1300); // 겹쳐서 넘어간 뒤 이전 영상 정지
+                setMsg(cur);
             }
             try { vids[cur].currentTime = 0; } catch (e) {}
             if (counter) counter.textContent = ('0' + (cur + 1)).slice(-2) + ' / ' + ('0' + slides.length).slice(-2);
