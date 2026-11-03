@@ -63,8 +63,8 @@ $tf_multi = count($tf_cat['items']) > 1;
                 </tbody>
             </table>
             <div class="tf-loc-btns">
-                <a href="<?php echo $tf_inquiry_url; ?>" class="tf-btn tf-btn--primary">이 제품으로 견적 문의</a>
-                <a href="<?php echo tf_board_url($tf_boards['portfolio']); ?>" class="tf-btn tf-btn--line">시공사례 보기</a>
+                <a href="<?php echo $tf_inquiry_url; ?>" class="tf-btn tf-btn--primary">이 자재로 시공 상담</a>
+                <?php if (tf_board_exists($tf_boards['portfolio'])) { ?><a href="<?php echo tf_portfolio_url(); ?>" class="tf-btn tf-btn--line">시공사례 보기</a><?php } ?>
             </div>
         </div>
     </div>

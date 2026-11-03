@@ -4,7 +4,7 @@ if (!defined('_GNUBOARD_')) exit; // 개별 페이지 접근 불가
 include_once(G5_THEME_PATH.'/head.sub.php');
 include_once(G5_LIB_PATH.'/latest.lib.php');
 
-global $tf_site, $tf_menu, $tf_boards, $tf_inquiry_url, $tf_current, $tf_full;
+global $tf_site, $tf_menu, $tf_boards, $tf_inquiry_url, $tf_has_inquiry, $tf_current, $tf_full, $tf_visual_page;
 
 $tf_is_index = defined('_INDEX_');
 $tf_current  = tf_detect_current();
@@ -19,7 +19,8 @@ if ($tf_item) {
     $tf_page_title = isset($g5['title']) ? preg_replace('/\s*\d+\s*페이지$/u', '', $g5['title']) : '';
     if (strpos($tf_page_title, ' > ') !== false) $tf_page_title = trim(substr(strrchr($tf_page_title, '>'), 1));
 }
-$tf_visual = $tf_group ? $tf_group['visual'] : 'sub/sub_visual/interior-hd.jpg';
+// 페이지에서 $tf_visual_page 를 지정하면 그 이미지를, 아니면 대메뉴 이미지를 상단 배경으로 사용
+$tf_visual = !empty($tf_visual_page) ? $tf_visual_page : ($tf_group ? $tf_group['visual'] : 'sub/sub_visual/interior-hd.jpg');
 $tf_en     = $tf_group ? $tf_group['en'] : 'THE FAST';
 ?>
 <a class="tf-skip" href="#tf-main">본문 바로가기</a>
@@ -93,7 +94,7 @@ $tf_en     = $tf_group ? $tf_group['en'] : 'THE FAST';
         </ul>
     </nav>
     <div class="tf-drawer__foot">
-        <a href="<?php echo $tf_inquiry_url; ?>" class="tf-btn tf-btn--primary tf-btn--block">무료 상담 신청</a>
+        <a href="<?php echo $tf_inquiry_url; ?>" class="tf-btn tf-btn--primary tf-btn--block"><?php echo $tf_has_inquiry ? '무료 상담 신청' : '전화 상담 연결'; ?></a>
         <a href="<?php echo tf_tel_href($tf_site['tel']); ?>" class="tf-btn tf-btn--line tf-btn--block">전화 상담 <?php echo $tf_site['tel']; ?></a>
         <p class="tf-drawer__hours"><?php echo $tf_site['hours']; ?> · <?php echo $tf_site['hours_note']; ?></p>
     </div>

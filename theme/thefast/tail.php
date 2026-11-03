@@ -1,7 +1,7 @@
 <?php
 if (!defined('_GNUBOARD_')) exit; // 개별 페이지 접근 불가
 
-global $tf_site, $tf_menu, $tf_boards, $tf_inquiry_url, $tf_current, $tf_full;
+global $tf_site, $tf_menu, $tf_boards, $tf_inquiry_url, $tf_has_inquiry, $tf_current, $tf_full;
 
 // 상담/제휴 문의 화면에서는 하단 CTA 를 숨깁니다.
 $tf_hide_cta = in_array($tf_current, array('inquiry', 'partner'), true);
@@ -19,7 +19,7 @@ $tf_hide_cta = in_array($tf_current, array('inquiry', 'partner'), true);
             <h2 class="tf-cta__title" id="tfCtaTitle">공사 기간은 짧게, 소음은 적게.<br>지금 바로 상담 받아보세요.</h2>
         </div>
         <div class="tf-cta__actions">
-            <a href="<?php echo $tf_inquiry_url; ?>" class="tf-btn tf-btn--light tf-btn--lg">온라인 상담 신청 <span aria-hidden="true">→</span></a>
+            <a href="<?php echo $tf_inquiry_url; ?>" class="tf-btn tf-btn--light tf-btn--lg"><?php echo $tf_has_inquiry ? '온라인 상담 신청' : '전화 상담 연결'; ?> <span aria-hidden="true">→</span></a>
             <a href="<?php echo tf_tel_href($tf_site['tel']); ?>" class="tf-btn tf-btn--ghost tf-btn--lg"><?php echo $tf_site['tel_label']; ?></a>
         </div>
     </div>
@@ -66,7 +66,7 @@ $tf_hide_cta = in_array($tf_current, array('inquiry', 'partner'), true);
                 <li><a href="<?php echo get_pretty_url('content', 'provision'); ?>">이용약관</a></li>
                 <li><a href="<?php echo get_pretty_url('content', 'privacy'); ?>"><strong>개인정보처리방침</strong></a></li>
                 <li><a href="<?php echo tf_page_url('location'); ?>">오시는 길</a></li>
-                <li><a href="<?php echo tf_board_url($tf_boards['partner']); ?>">제휴 문의</a></li>
+                <?php if (tf_board_exists($tf_boards['partner'])) { ?><li><a href="<?php echo tf_board_url($tf_boards['partner']); ?>">제휴 문의</a></li><?php } ?>
             </ul>
             <address class="tf-footer__info">
                 <span><?php echo $tf_site['corp']; ?></span>
@@ -93,10 +93,12 @@ $tf_hide_cta = in_array($tf_current, array('inquiry', 'partner'), true);
         <span>카톡 상담</span>
     </a>
     <?php } ?>
+    <?php if ($tf_has_inquiry) { ?>
     <a href="<?php echo $tf_inquiry_url; ?>" class="tf-quick__btn tf-quick__btn--form">
         <svg aria-hidden="true" viewBox="0 0 24 24" width="20" height="20"><path fill="currentColor" d="M4 4h16a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2zm0 4.2V18h16V8.2l-8 5-8-5zM4.6 6 12 10.6 19.4 6H4.6z"/></svg>
         <span>견적 문의</span>
     </a>
+    <?php } ?>
     <button type="button" class="tf-quick__top" id="tfTop"><span class="sound_only">페이지 맨 위로</span><span aria-hidden="true">↑</span></button>
 </nav>
 

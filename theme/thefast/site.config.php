@@ -41,9 +41,9 @@ $tf_site = array(
  * 2. SEO 기본값 (한글 "더패스트" 검색 기준)
  * ------------------------------------------------------------------ */
 $tf_seo = array(
-    'title'       => '더패스트 | 빠르고 조용한 인테리어 리모델링 전문',
-    'description' => '더패스트(THE FAST)는 라미네이트 판넬·타일 건식 시공으로 아파트, 주택, 상가, 관공서, 학교, 병원 리모델링을 빠르고 조용하게 완성하는 인테리어 시공 전문기업입니다.',
-    'keywords'    => '더패스트,THE FAST,더패스트 인테리어,양주 인테리어,리모델링,라미네이트 판넬,라미네이트 타일,건식 벽체,욕실 리모델링,타공보드,친환경 바닥재,천장재,관공서 인테리어,상가 인테리어',
+    'title'       => '더패스트 | 욕실·주방·거실 리모델링, 빠르고 조용한 인테리어',
+    'description' => '더패스트(THE FAST)는 철거와 소음을 줄인 건식 시공으로 아파트·주택의 욕실, 주방, 거실 리모델링을 빠르고 깔끔하게 완성하는 인테리어 시공 전문기업입니다.',
+    'keywords'    => '더패스트,THE FAST,더패스트 인테리어,양주 인테리어,아파트 리모델링,욕실 리모델링,주방 리모델링,거실 아트월,빌라 리모델링,건식 리모델링,라미네이트 판넬,라미네이트 타일,인테리어 견적',
     'og_image'    => '/img/og-image.jpg', // 테마 기준 경로 (1200x630)
     // 검색엔진 소유확인 코드 (네이버 서치어드바이저 / 구글 서치콘솔)
     'naver_verify'  => '',
@@ -141,7 +141,7 @@ $tf_board_fields = array(
     ),
     $tf_boards['inquiry'] => array(
         'wr_1' => array('label' => '연락처',        'type' => 'tel',    'req' => true, 'ph' => '010-0000-0000'),
-        'wr_2' => array('label' => '공간 유형',     'type' => 'radio',  'req' => true, 'options' => array('아파트', '단독주택', '빌라·다세대', '상가·매장', '사무실', '관공서·학교', '병원', '기타')),
+        'wr_2' => array('label' => '공간 유형',     'type' => 'radio',  'req' => true, 'options' => array('아파트', '단독주택', '빌라·다세대', '오피스텔', '상가·사무실', '기타')),
         'wr_6' => array('label' => '시공 지역',     'type' => 'text',   'ph' => '예) 경기 양주시 회암동'),
         'wr_3' => array('label' => '평수',          'type' => 'text',   'ph' => '예) 32평 / 욕실 1개'),
         'wr_4' => array('label' => '예산',          'type' => 'select', 'options' => array('상담 후 결정', '500만원 미만', '500~1,000만원', '1,000~3,000만원', '3,000~5,000만원', '5,000만원 이상')),
@@ -174,17 +174,6 @@ $tf_menu = array(
             array('key' => 'location', 'title' => '오시는 길',     'href' => tf_page_url('location')),
         ),
     ),
-    'product' => array(
-        'title'  => '제품안내',
-        'en'     => 'Products',
-        'visual' => 'sub/sub_visual/product-hd.jpg',
-        'lead'   => '공간의 완성도를 높이는 친환경 건식 마감재',
-        'sub'    => array(
-            array('key' => 'product-wall',    'title' => '벽장재', 'href' => tf_page_url('product', 'type=wall')),
-            array('key' => 'product-floor',   'title' => '바닥재', 'href' => tf_page_url('product', 'type=floor')),
-            array('key' => 'product-ceiling', 'title' => '천장재', 'href' => tf_page_url('product', 'type=ceiling')),
-        ),
-    ),
     'portfolio' => array(
         'title'  => '시공사례',
         'en'     => 'Portfolio',
@@ -192,6 +181,26 @@ $tf_menu = array(
         'lead'   => '더패스트가 완성한 공간을 소개합니다.',
         'sub'    => array(
             /* 하위 메뉴는 아래 "시공사례 하위 메뉴" 코드에서 게시판 분류로 자동 생성 */
+        ),
+    ),
+    'space' => array(
+        'title'  => '공간별 리모델링',
+        'en'     => 'Spaces',
+        'visual' => 'main/visual_slide/bg02.jpg',
+        'lead'   => '욕실, 주방, 거실까지 공간에 맞춘 건식 리모델링',
+        'sub'    => array(
+            /* 하위 메뉴는 inc/spaces.php 의 공간 목록으로 자동 생성 */
+        ),
+    ),
+    'product' => array(
+        'title'  => '자재·공법',
+        'en'     => 'Materials',
+        'visual' => 'sub/sub_visual/product-hd.jpg',
+        'lead'   => '더패스트 시공에 사용하는 친환경 건식 마감재',
+        'sub'    => array(
+            array('key' => 'product-wall',    'title' => '벽장재', 'href' => tf_page_url('product', 'type=wall')),
+            array('key' => 'product-floor',   'title' => '바닥재', 'href' => tf_page_url('product', 'type=floor')),
+            array('key' => 'product-ceiling', 'title' => '천장재', 'href' => tf_page_url('product', 'type=ceiling')),
         ),
     ),
     'review' => array(
@@ -217,6 +226,13 @@ $tf_menu = array(
     ),
 );
 
+/* 공간별 리모델링 하위 메뉴 */
+include_once(G5_THEME_PATH.'/inc/spaces.php');
+foreach ($tf_spaces as $tf_k => $tf_sp) {
+    $tf_menu['space']['sub'][] = array('key' => 'space-'.$tf_k, 'title' => $tf_sp['title'], 'href' => tf_page_url('space', 'type='.$tf_k));
+}
+unset($tf_k, $tf_sp);
+
 /* 시공사례 하위 메뉴: 전체 + 게시판 분류 */
 $tf_menu['portfolio']['sub'] = array(
     array('key' => 'portfolio', 'title' => $tf_portfolio_cates ? '전체' : '시공사례', 'href' => tf_board_url($tf_boards['portfolio']), 'board' => $tf_boards['portfolio']),
@@ -232,8 +248,37 @@ foreach ($tf_portfolio_cates as $tf_i => $tf_c) {
 }
 unset($tf_i, $tf_c);
 
-/* 상담문의 바로가기 (헤더 버튼 / CTA) */
-$tf_inquiry_url = G5_BBS_URL.'/write.php?bo_table='.$tf_boards['inquiry'];
+/**
+ * 게시판이 실제로 만들어져 있는지 (관리자에서 아직 만들지 않은 게시판의 메뉴·버튼은 자동으로 숨김)
+ */
+function tf_board_exists($bo_table)
+{
+    static $list = null;
+    global $g5;
+    if ($list === null) {
+        $list = array();
+        if (!empty($g5['board_table'])) {
+            $res = sql_query(" select bo_table from {$g5['board_table']} ", false);
+            if ($res) while ($row = sql_fetch_array($res)) $list[$row['bo_table']] = true;
+        }
+    }
+    return isset($list[$bo_table]);
+}
+
+foreach ($tf_menu as $tf_g => $tf_group) {
+    $tf_keep = array();
+    foreach ($tf_group['sub'] as $tf_item) {
+        if (!empty($tf_item['board']) && !tf_board_exists($tf_item['board'])) continue;
+        $tf_keep[] = $tf_item;
+    }
+    if ($tf_keep) $tf_menu[$tf_g]['sub'] = $tf_keep;
+    else unset($tf_menu[$tf_g]); // 하위 메뉴가 모두 없으면 대메뉴도 숨김
+}
+unset($tf_g, $tf_group, $tf_keep, $tf_item);
+
+/* 상담문의 바로가기 (헤더 버튼 / CTA) — 상담 게시판이 없으면 전화 연결 */
+$tf_has_inquiry = tf_board_exists($tf_boards['inquiry']);
+$tf_inquiry_url = $tf_has_inquiry ? G5_BBS_URL.'/write.php?bo_table='.$tf_boards['inquiry'] : tf_tel_href($tf_site['tel']);
 
 /* ------------------------------------------------------------------
  * 6. 현재 페이지 판별

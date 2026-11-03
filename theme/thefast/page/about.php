@@ -66,26 +66,27 @@ include_once(G5_THEME_PATH.'/inc/tf.lib.php');
     <div class="tf-inner">
         <div class="tf-head">
             <div class="tf-head__text">
-                <p class="tf-eyebrow tf-reveal">Business</p>
-                <h2 class="tf-h2 tf-reveal" id="tfBizTitle">공간의 목적에 맞춘 시공</h2>
-                <p class="tf-lead tf-reveal">주거 공간부터 학교, 병원, 관공서, 상업시설까지 다양한 현장을 시공합니다.</p>
+                <p class="tf-eyebrow tf-reveal">Spaces</p>
+                <h2 class="tf-h2 tf-reveal" id="tfBizTitle">생활 공간에 맞춘 리모델링</h2>
+                <p class="tf-lead tf-reveal">아파트, 단독주택, 빌라의 욕실·주방·거실부터 집 전체까지 건식 리모델링으로 완성합니다.</p>
             </div>
-            <a href="<?php echo tf_board_url($tf_boards['portfolio']); ?>" class="tf-link tf-reveal">시공사례 보기 <span aria-hidden="true">→</span></a>
+            <?php if (tf_board_exists($tf_boards['portfolio'])) { ?>
+            <a href="<?php echo tf_portfolio_url(); ?>" class="tf-link tf-reveal">시공사례 보기 <span aria-hidden="true">→</span></a>
+            <?php } ?>
         </div>
-        <div class="tf-biz">
-            <a href="<?php echo tf_portfolio_url('주거공간'); ?>" class="tf-biz__item tf-reveal">
-                <img src="<?php echo tf_img('main/visual_slide/bg01.jpg'); ?>" alt="" width="800" height="1000" loading="lazy">
-                <div class="tf-biz__body"><h3>주거공간</h3><p>아파트 · 단독주택 · 빌라 · 욕실 · 주방</p></div>
-            </a>
-            <a href="<?php echo tf_portfolio_url('관공서'); ?>" class="tf-biz__item tf-reveal" data-delay="1">
-                <img src="<?php echo tf_img('main/pd-img03.jpg'); ?>" alt="" width="800" height="1000" loading="lazy">
-                <div class="tf-biz__body"><h3>관공서 · 교육시설</h3><p>관공서 · 학교 · 어린이집 · 병원 · 강당</p></div>
-            </a>
-            <a href="<?php echo tf_portfolio_url('상업시설'); ?>" class="tf-biz__item tf-reveal" data-delay="2">
-                <img src="<?php echo tf_img('sub/sub_visual/portfolio-hd.jpg'); ?>" alt="" width="800" height="1000" loading="lazy">
-                <div class="tf-biz__body"><h3>상업시설</h3><p>카페 · 매장 · 사무실 · 피트니스센터</p></div>
-            </a>
-        </div>
+        <?php include_once(G5_THEME_PATH.'/inc/spaces.php'); ?>
+        <ul class="tf-spaces">
+            <?php $i = 0; foreach ($tf_spaces as $k => $sp) { ?>
+            <li class="tf-reveal" data-delay="<?php echo $i++ % 4; ?>">
+                <a href="<?php echo tf_page_url('space', 'type='.$k); ?>" class="tf-spaces__item">
+                    <img src="<?php echo tf_img($sp['thumb']); ?>" alt="" width="640" height="800" loading="lazy">
+                    <span class="tf-spaces__en"><?php echo $sp['en']; ?></span>
+                    <h3><?php echo $sp['title']; ?></h3>
+                    <span class="tf-bento__arrow" aria-hidden="true">→</span>
+                </a>
+            </li>
+            <?php } ?>
+        </ul>
     </div>
 </section>
 

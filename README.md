@@ -11,8 +11,9 @@
 theme/thefast/            ← 서버의 /theme/thefast/ 에 그대로 업로드
   site.config.php         ← 상호·연락처·메뉴·SEO·게시판 확장필드 (수정은 여기 한 곳에서)
   head.sub.php / head.php / tail.php / tail.sub.php / index.php
-  page/                   ← 회사소개, 시공 프로세스, 오시는 길, 제품안내(벽장재·바닥재·천장재)
-  inc/products.php        ← 제품 데이터 (제품 추가·수정은 이 파일만)
+  page/                   ← 회사소개, 시공 프로세스, 오시는 길, 공간별 리모델링(욕실·주방·거실·전체), 자재·공법(벽장재·바닥재·천장재)
+  inc/products.php        ← 자재 데이터 (자재 추가·수정은 이 파일만)
+  inc/spaces.php          ← 공간별 리모델링 데이터 (공간 추가·수정은 이 파일만, 메뉴 자동 반영)
   inc/board/              ← 게시판 공통 보기/글쓰기/댓글 템플릿
   skin/board/thefast_gallery  ← 시공사례·고객후기 (카드형)
   skin/board/thefast_list     ← 소식·리뷰 이벤트·주요 실적 (목록형)
@@ -45,6 +46,9 @@ _reference/               ← 그누보드 5.6.45 원본(기본 테마·코어 �
    → 네이버·구글에 등록된 기존 `.html` 주소의 검색 순위가 새 주소로 넘어갑니다.
 
 ## 게시판 설정표 (SQL 을 쓰지 않을 때)
+
+> DB 접근이 안 되는 호스팅은 [_deploy/admin_board_guide.md](_deploy/admin_board_guide.md) 를 따라 관리자 화면에서 만드세요.
+> **아직 만들지 않은 게시판의 메뉴·버튼은 자동으로 숨겨집니다.** (상담 게시판이 없으면 상담 버튼은 전화 연결로 바뀜)
 
 | 게시판 ID | 이름 | 스킨 (PC/모바일 동일) | 분류 | 글쓰기 권한 | 비밀글 | 에디터 |
 |---|---|---|---|---|---|---|

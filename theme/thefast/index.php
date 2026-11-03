@@ -4,13 +4,24 @@ if (!defined('_GNUBOARD_')) exit; // 개별 페이지 접근 불가
 
 include_once(G5_THEME_PATH.'/head.php');
 include_once(G5_THEME_PATH.'/inc/tf.lib.php');
+include_once(G5_THEME_PATH.'/inc/spaces.php');
 
-$tf_portfolio = tf_latest_posts($tf_boards['portfolio'], 6, 640, 480);
-$tf_reviews   = tf_latest_posts($tf_boards['review'], 5);
-$tf_news      = tf_latest_posts($tf_boards['news'], 5);
+// 게시판이 없으면 해당 영역은 출력하지 않음
+$tf_has_portfolio = tf_board_exists($tf_boards['portfolio']);
+$tf_has_review    = tf_board_exists($tf_boards['review']);
+$tf_has_news      = tf_board_exists($tf_boards['news']);
+
+$tf_portfolio = $tf_has_portfolio ? tf_latest_posts($tf_boards['portfolio'], 6, 640, 480) : array();
+// 첫 번째(크게 보이는) 사례는 큰 썸네일로 다시 요청 (원본이 작으면 원본 크기까지만)
+if (count($tf_portfolio) >= 4) {
+    $tf_big = tf_post_thumb($tf_boards['portfolio'], $tf_portfolio[0]['wr_id'], 1280, 960);
+    if ($tf_big) $tf_portfolio[0]['thumb'] = $tf_big;
+}
+$tf_reviews   = $tf_has_review ? tf_latest_posts($tf_boards['review'], 5) : array();
+$tf_news      = $tf_has_news ? tf_latest_posts($tf_boards['news'], 5) : array();
 
 $tf_slides = array(
-    array('src' => 'main/visual_slide/bg01.jpg', 'alt' => '우드 포인트 벽과 화이트 톤으로 시공한 거실 인테리어'),
+    array('src' => 'main/visual_slide/bg01.jpg', 'alt' => '우드 아트월과 화이트 톤으로 리모델링한 거실'),
     array('src' => 'main/visual_slide/bg02.jpg', 'alt' => '밝은 화이트 톤으로 리모델링한 거실과 주방'),
     array('src' => 'main/visual_slide/bg03.jpg', 'alt' => '라미네이트 판넬로 마감한 다이닝 공간'),
     array('src' => 'main/visual_slide/bg04.jpg', 'alt' => '브라운 라미네이트 벽면으로 시공한 다이닝 룸'),
@@ -32,16 +43,20 @@ $tf_slides = array(
     </div>
 
     <div class="tf-inner tf-hero__body">
-        <p class="tf-hero__kicker"><i aria-hidden="true"></i>Dry Wall System · Laminate Panel</p>
-        <h1 class="tf-hero__title">
-            <span class="tf-hero__ko">더패스트 인테리어 리모델링</span>
-            <span>Swifter</span>
-            <span><b class="tf-amp">&amp;</b> Quieter</span>
+        <p class="tf-hero__kicker"><i aria-hidden="true"></i>건식 리모델링 전문 · Swifter &amp; Quieter</p>
+        <h1 class="tf-hero__title tf-hero__title--ko">
+            <span class="tf-hero__ko">더패스트 인테리어</span>
+            <span>살면서 하는 리모델링,</span>
+            <span>빠르고 <em>조용하게.</em></span>
         </h1>
-        <p class="tf-hero__desc"><strong>더패스트</strong>는 큰 소음 없는 건식 시공으로<br>보다 빠르고 조용하게 만족스러운 공간을 만들어 드립니다.</p>
+        <p class="tf-hero__desc">철거와 소음은 줄이고 공사 기간은 짧게.<br>욕실·주방·거실을 새롭게 바꿔 드립니다.</p>
         <div class="tf-hero__actions">
             <a href="<?php echo $tf_inquiry_url; ?>" class="tf-btn tf-btn--primary tf-btn--lg">무료 견적 상담 <span aria-hidden="true">→</span></a>
-            <a href="<?php echo tf_board_url($tf_boards['portfolio']); ?>" class="tf-btn tf-btn--ghost tf-btn--lg">시공사례 보기</a>
+            <?php if ($tf_has_portfolio) { ?>
+            <a href="<?php echo tf_portfolio_url(); ?>" class="tf-btn tf-btn--ghost tf-btn--lg">시공사례 보기</a>
+            <?php } else { ?>
+            <a href="<?php echo tf_page_url('space', 'type=bath'); ?>" class="tf-btn tf-btn--ghost tf-btn--lg">공간별 리모델링 보기</a>
+            <?php } ?>
         </div>
     </div>
 
@@ -59,94 +74,12 @@ $tf_slides = array(
 <div class="tf-marquee" aria-hidden="true">
     <div class="tf-marquee__track">
         <?php for ($k = 0; $k < 2; $k++) { ?>
-        <span>THE FAST</span><span>Swifter &amp; Quieter</span><span>더패스트 인테리어</span><span>Dry Wall System</span><span>Laminate Panel</span><span>빠르고 조용한 리모델링</span>
+        <span>더패스트 인테리어</span><span>욕실 리모델링</span><span>주방 리모델링</span><span>거실 아트월</span><span>전체 리모델링</span><span>Swifter &amp; Quieter</span>
         <?php } ?>
     </div>
 </div>
 
-<!-- 소개 -->
-<section class="tf-section" aria-labelledby="tfIntroTitle">
-    <div class="tf-inner tf-intro">
-        <div class="tf-intro__media tf-reveal">
-            <img src="<?php echo tf_img('sub/sub_visual/interior-hd.jpg'); ?>" alt="모던한 그레이 톤으로 리모델링한 거실과 다이닝 공간" width="960" height="1200" loading="lazy">
-            <div class="tf-intro__badge">
-                <b>철거·미장 최소화</b>
-                <strong>건식 시공 시스템</strong>
-            </div>
-        </div>
-        <div>
-            <p class="tf-eyebrow tf-reveal">Why THE FAST</p>
-            <h2 class="tf-h2 tf-reveal" id="tfIntroTitle">공사는 짧고 조용하게,<br>결과는 <em>오래도록</em> 깨끗하게.</h2>
-            <p class="tf-lead tf-reveal">더패스트는 빠른 시공을 자랑하며, 큰 소음 없이 완벽하고 만족스러운 인테리어를 제공합니다. 공사 기간이 짧아 인건비 부담을 줄이고, 층간 공사 소음을 최소화해 이웃 간 불편함을 덜어 드립니다.</p>
-            <ul class="tf-points">
-                <li class="tf-point tf-reveal" data-delay="1">
-                    <span class="tf-point__num">01</span>
-                    <h3>빠른 시공</h3>
-                    <p>판넬 결합 방식으로 합판·석고보드 없이 설치 시간을 최소화합니다.</p>
-                </li>
-                <li class="tf-point tf-reveal" data-delay="2">
-                    <span class="tf-point__num">02</span>
-                    <h3>저소음 공사</h3>
-                    <p>타일 철거 없이 기존 벽면 위에 시공해 소음과 분진을 줄입니다.</p>
-                </li>
-                <li class="tf-point tf-reveal" data-delay="1">
-                    <span class="tf-point__num">03</span>
-                    <h3>친환경 자재</h3>
-                    <p>접착제를 쓰지 않는 시공과 유해물질 미검출 자재를 사용합니다.</p>
-                </li>
-                <li class="tf-point tf-reveal" data-delay="2">
-                    <span class="tf-point__num">04</span>
-                    <h3>비용 절감</h3>
-                    <p>짧은 공기로 인건비를 낮추고, 고급 마감을 합리적인 비용으로 구현합니다.</p>
-                </li>
-            </ul>
-        </div>
-    </div>
-</section>
-
-<!-- 제품 -->
-<section class="tf-section tf-section--stone" aria-labelledby="tfProductTitle">
-    <div class="tf-inner">
-        <div class="tf-head">
-            <div class="tf-head__text">
-                <p class="tf-eyebrow tf-reveal">Products</p>
-                <h2 class="tf-h2 tf-reveal" id="tfProductTitle">어떤 공간이든<br>완성도를 높이는 마감재</h2>
-            </div>
-            <a href="<?php echo tf_page_url('product', 'type=wall'); ?>" class="tf-link tf-reveal">전체 제품 보기 <span aria-hidden="true">→</span></a>
-        </div>
-        <div class="tf-bento">
-            <a href="<?php echo tf_page_url('product', 'type=wall'); ?>#laminate-panel" class="tf-bento__item tf-reveal">
-                <img src="<?php echo tf_img('main/pd-img01.jpg'); ?>" alt="" width="960" height="720" loading="lazy">
-                <span class="tf-bento__arrow" aria-hidden="true">→</span>
-                <span class="tf-bento__cat">Wall · 벽장재</span>
-                <h3>라미네이트 판넬</h3>
-                <p>나무, 돌, 세라믹 등 다양한 텍스처와 색상으로 고급스러운 인테리어를 연출합니다.</p>
-            </a>
-            <a href="<?php echo tf_page_url('product', 'type=wall'); ?>#laminate-tile" class="tf-bento__item tf-reveal" data-delay="1">
-                <img src="<?php echo tf_img('main/pd-img02.jpg'); ?>" alt="" width="960" height="720" loading="lazy">
-                <span class="tf-bento__arrow" aria-hidden="true">→</span>
-                <span class="tf-bento__cat">Wall · 벽장재</span>
-                <h3>라미네이트 타일</h3>
-                <p>타공 없이 간편하고 빠르게, 충격·마모에 강하고 방수가 뛰어납니다.</p>
-            </a>
-            <a href="<?php echo tf_page_url('product', 'type=wall'); ?>#prime-line" class="tf-bento__item tf-reveal" data-delay="2">
-                <img src="<?php echo tf_img('main/pd-img03.jpg'); ?>" alt="" width="960" height="720" loading="lazy">
-                <span class="tf-bento__arrow" aria-hidden="true">→</span>
-                <span class="tf-bento__cat">Acoustic · 흡음</span>
-                <h3>프라임 타공보드</h3>
-                <p>소음 저감과 준불연 성능, 습기·곰팡이에 강한 항균 기능을 갖췄습니다.</p>
-            </a>
-            <a href="<?php echo tf_page_url('product', 'type=ceiling'); ?>" class="tf-bento__item tf-reveal">
-                <img src="<?php echo tf_img('main/pd-img04.jpg'); ?>" alt="" width="1920" height="720" loading="lazy">
-                <span class="tf-bento__arrow" aria-hidden="true">→</span>
-                <span class="tf-bento__cat">Ceiling · 천장재</span>
-                <h3>천연 석고 천장재</h3>
-                <p>천공 패널로 소리와 진동을 줄이고, 화재에 안전한 불연 천장재입니다.</p>
-            </a>
-        </div>
-    </div>
-</section>
-
+<?php if ($tf_has_portfolio) { ?>
 <!-- 시공사례 -->
 <section class="tf-section" aria-labelledby="tfPortTitle">
     <div class="tf-inner">
@@ -154,7 +87,7 @@ $tf_slides = array(
             <div class="tf-head__text">
                 <p class="tf-eyebrow tf-reveal">Portfolio</p>
                 <h2 class="tf-h2 tf-reveal" id="tfPortTitle">더패스트가 완성한 공간</h2>
-                <p class="tf-lead tf-reveal">거실, 주방, 욕실부터 관공서와 상업 공간까지 빠른 시공이 가능합니다.</p>
+                <p class="tf-lead tf-reveal">욕실, 주방, 거실까지 더패스트가 직접 시공한 현장을 확인해 보세요.</p>
             </div>
             <?php if ($tf_portfolio_cates) { ?>
             <nav class="tf-space tf-reveal" aria-label="시공사례 분류">
@@ -168,7 +101,7 @@ $tf_slides = array(
         </div>
 
         <?php if ($tf_portfolio) { ?>
-        <ul class="tf-cards">
+        <ul class="tf-cards<?php echo count($tf_portfolio) >= 4 ? ' tf-cards--feature' : ''; ?>">
             <?php foreach ($tf_portfolio as $i => $p) { ?>
             <li class="tf-reveal" data-delay="<?php echo $i % 3; ?>">
                 <a href="<?php echo $p['href']; ?>" class="tf-card">
@@ -192,37 +125,101 @@ $tf_slides = array(
             <?php } ?>
         </ul>
         <?php } else { ?>
-        <div class="tf-empty"><strong>시공사례를 준비하고 있습니다.</strong>곧 더패스트의 다양한 시공 현장을 소개해 드리겠습니다.</div>
+        <div class="tf-empty"><strong>시공사례를 준비하고 있습니다.</strong>곧 더패스트의 시공 현장을 소개해 드리겠습니다.</div>
         <?php } ?>
     </div>
 </section>
+<?php } ?>
 
-<!-- 시공 프로세스 -->
+<!-- 공간별 리모델링 -->
+<section class="tf-section<?php echo $tf_has_portfolio ? ' tf-section--stone' : ''; ?>" aria-labelledby="tfSpaceTitle">
+    <div class="tf-inner">
+        <div class="tf-head">
+            <div class="tf-head__text">
+                <p class="tf-eyebrow tf-reveal">Spaces</p>
+                <h2 class="tf-h2 tf-reveal" id="tfSpaceTitle">어떤 공간을<br>바꾸고 싶으세요?</h2>
+            </div>
+        </div>
+        <ul class="tf-spaces">
+            <?php $i = 0; foreach ($tf_spaces as $k => $sp) { ?>
+            <li class="tf-reveal" data-delay="<?php echo $i++ % 4; ?>">
+                <a href="<?php echo tf_page_url('space', 'type='.$k); ?>" class="tf-spaces__item">
+                    <img src="<?php echo tf_img($sp['thumb']); ?>" alt="" width="640" height="800" loading="lazy">
+                    <span class="tf-spaces__en"><?php echo $sp['en']; ?></span>
+                    <h3><?php echo $sp['title']; ?></h3>
+                    <p><?php echo $sp['pains'][0]; ?>, 이제 해결하세요.</p>
+                    <span class="tf-bento__arrow" aria-hidden="true">→</span>
+                </a>
+            </li>
+            <?php } ?>
+        </ul>
+    </div>
+</section>
+
+<!-- 더패스트 공법 -->
+<section class="tf-section" aria-labelledby="tfIntroTitle">
+    <div class="tf-inner tf-intro">
+        <div class="tf-intro__media tf-reveal">
+            <img src="<?php echo tf_img('sub/sub_visual/interior-hd.jpg'); ?>" alt="모던한 그레이 톤으로 리모델링한 거실과 다이닝 공간" width="960" height="1200" loading="lazy">
+            <div class="tf-intro__badge">
+                <b>철거·미장 최소화</b>
+                <strong>건식 시공</strong>
+            </div>
+        </div>
+        <div>
+            <p class="tf-eyebrow tf-reveal">Why THE FAST</p>
+            <h2 class="tf-h2 tf-reveal" id="tfIntroTitle">공사는 짧고 조용하게,<br>결과는 <em>오래도록</em> 깨끗하게.</h2>
+            <p class="tf-lead tf-reveal">더패스트는 큰 소음 없이 빠르게 시공합니다. 공사 기간이 짧아 인건비 부담을 줄이고, 층간 공사 소음을 최소화해 이웃 간 불편함을 덜어 드립니다.</p>
+            <ul class="tf-points">
+                <li class="tf-point tf-reveal" data-delay="1">
+                    <span class="tf-point__num">01</span>
+                    <h3>빠른 시공</h3>
+                    <p>판넬 결합 방식으로 합판·석고보드 없이 설치 시간을 줄입니다.</p>
+                </li>
+                <li class="tf-point tf-reveal" data-delay="2">
+                    <span class="tf-point__num">02</span>
+                    <h3>조용한 공사</h3>
+                    <p>기존 벽면 위에 시공해 철거 소음과 분진을 줄입니다.</p>
+                </li>
+                <li class="tf-point tf-reveal" data-delay="1">
+                    <span class="tf-point__num">03</span>
+                    <h3>친환경 자재</h3>
+                    <p>접착제 없는 시공과 유해물질 미검출 자재를 사용합니다.</p>
+                </li>
+                <li class="tf-point tf-reveal" data-delay="2">
+                    <span class="tf-point__num">04</span>
+                    <h3>합리적인 비용</h3>
+                    <p>짧은 공사 기간으로 비용을 줄이고 고급 마감을 구현합니다.</p>
+                </li>
+            </ul>
+        </div>
+    </div>
+</section>
+
+<!-- 시공 프로세스 (4단계 요약) -->
 <section class="tf-section tf-section--navy" aria-labelledby="tfStepTitle">
     <div class="tf-inner">
         <div class="tf-head">
             <div class="tf-head__text">
                 <p class="tf-eyebrow tf-eyebrow--light tf-reveal">Process</p>
-                <h2 class="tf-h2 tf-reveal" id="tfStepTitle">상담부터 준공까지,<br>투명하게 안내해 드립니다.</h2>
+                <h2 class="tf-h2 tf-reveal" id="tfStepTitle">상담부터 입주까지,<br>담당자가 함께합니다.</h2>
             </div>
-            <a href="<?php echo tf_page_url('process'); ?>" class="tf-btn tf-btn--ghost tf-reveal">시공 프로세스 자세히 보기</a>
+            <a href="<?php echo tf_page_url('process'); ?>" class="tf-btn tf-btn--ghost tf-reveal">8단계 프로세스 자세히 보기</a>
         </div>
         <ol class="tf-steps">
-            <li class="tf-reveal"><b>STEP 01</b><h3>견적 문의</h3><p>상담 접수 후 3일 이내 담당자가 배정되어 대략적인 견적을 안내합니다.</p></li>
-            <li class="tf-reveal" data-delay="1"><b>STEP 02</b><h3>상담 안내</h3><p>현장 사진, 도면, 원하시는 사항을 바탕으로 비용과 일정을 상담합니다.</p></li>
-            <li class="tf-reveal" data-delay="2"><b>STEP 03</b><h3>현장 방문</h3><p>실측과 전기·설비 구성을 확인하고 공사 방향을 정합니다.</p></li>
-            <li class="tf-reveal" data-delay="3"><b>STEP 04</b><h3>견적 &amp; 계약</h3><p>세부 견적을 바탕으로 계약 후 담당 설계 디자이너가 배정됩니다.</p></li>
-            <li class="tf-reveal"><b>STEP 05</b><h3>디자인 · 설계</h3><p>평면 또는 3D 모델링으로 마감재, 가구, 조명을 협의합니다.</p></li>
-            <li class="tf-reveal" data-delay="1"><b>STEP 06</b><h3>시공</h3><p>공사 담당자가 사전 조율된 내용을 바탕으로 단계별 시공을 진행합니다.</p></li>
-            <li class="tf-reveal" data-delay="2"><b>STEP 07</b><h3>현장 공유</h3><p>공사 기간 동안 현장 현황을 사진·영상으로 안내해 드립니다.</p></li>
-            <li class="tf-reveal" data-delay="3"><b>STEP 08</b><h3>준공</h3><p>잔손 작업과 베이크아웃을 마친 뒤 깨끗한 공간을 인도합니다.</p></li>
+            <li class="tf-reveal"><b>STEP 01</b><h3>상담 · 견적</h3><p>상담 접수 후 3일 이내 담당자가 배정되어 대략적인 견적을 안내합니다.</p></li>
+            <li class="tf-reveal" data-delay="1"><b>STEP 02</b><h3>현장 실측</h3><p>실측과 전기·설비 구성을 확인하고 공사 방향과 세부 견적을 정합니다.</p></li>
+            <li class="tf-reveal" data-delay="2"><b>STEP 03</b><h3>디자인 · 계약</h3><p>평면 또는 3D 모델링으로 마감재, 가구, 조명을 함께 정합니다.</p></li>
+            <li class="tf-reveal" data-delay="3"><b>STEP 04</b><h3>시공 · 입주</h3><p>현장을 사진·영상으로 공유하고, 잔손 작업과 베이크아웃 후 인도합니다.</p></li>
         </ol>
     </div>
 </section>
 
+<?php if ($tf_has_review || $tf_has_news) { ?>
 <!-- 후기 / 소식 -->
 <section class="tf-section" aria-label="고객후기와 더패스트 소식">
-    <div class="tf-inner tf-split">
+    <div class="tf-inner<?php echo ($tf_has_review && $tf_has_news) ? ' tf-split' : ''; ?>">
+        <?php if ($tf_has_review) { ?>
         <div class="tf-mini tf-reveal">
             <div class="tf-mini__head">
                 <h2 class="tf-mini__title">고객 후기</h2>
@@ -238,6 +235,8 @@ $tf_slides = array(
             <p class="tf-mini__empty">등록된 후기가 없습니다.</p>
             <?php } ?>
         </div>
+        <?php } ?>
+        <?php if ($tf_has_news) { ?>
         <div class="tf-mini tf-reveal" data-delay="1">
             <div class="tf-mini__head">
                 <h2 class="tf-mini__title">더패스트 소식</h2>
@@ -253,6 +252,24 @@ $tf_slides = array(
             <p class="tf-mini__empty">등록된 소식이 없습니다.</p>
             <?php } ?>
         </div>
+        <?php } ?>
+    </div>
+</section>
+<?php } ?>
+
+<!-- 시공 자재 (작게) -->
+<section class="tf-section tf-section--stone tf-section--compact" aria-labelledby="tfMatTitle">
+    <div class="tf-inner tf-mats">
+        <div>
+            <p class="tf-eyebrow tf-reveal">Materials</p>
+            <h2 class="tf-mats__title tf-reveal" id="tfMatTitle">더패스트 시공에 쓰는 자재</h2>
+            <p class="tf-mats__desc tf-reveal">물과 오염에 강하고 유해물질 걱정을 줄인 건식 마감재를 사용합니다.</p>
+        </div>
+        <ul class="tf-mats__list">
+            <li class="tf-reveal"><a href="<?php echo tf_page_url('product', 'type=wall'); ?>"><img src="<?php echo tf_img('main/pd-img01.jpg'); ?>" alt="" width="120" height="120" loading="lazy"><span><b>벽장재</b>라미네이트 판넬·타일, 타공보드</span></a></li>
+            <li class="tf-reveal" data-delay="1"><a href="<?php echo tf_page_url('product', 'type=floor'); ?>"><img src="<?php echo tf_img('sub/product/emotion_sheet01.jpg'); ?>" alt="" width="120" height="120" loading="lazy"><span><b>바닥재</b>미끄럼 방지·친환경 바닥재</span></a></li>
+            <li class="tf-reveal" data-delay="2"><a href="<?php echo tf_page_url('product', 'type=ceiling'); ?>"><img src="<?php echo tf_img('main/pd-img04.jpg'); ?>" alt="" width="120" height="120" loading="lazy"><span><b>천장재</b>흡음·불연 천연 석고</span></a></li>
+        </ul>
     </div>
 </section>
 

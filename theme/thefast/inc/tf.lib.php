@@ -47,13 +47,33 @@ function tf_latest_posts($bo_table, $rows = 6, $thumb_w = 0, $thumb_h = 0, $sca 
             'alt'      => '',
         );
         if ($thumb_w) {
-            $thumb = get_list_thumbnail($bo_table, $row['wr_id'], $thumb_w, $thumb_h, false, true);
-            $item['thumb'] = $thumb['src'] ?? '';
-            $item['alt']   = !empty($thumb['alt']) ? $thumb['alt'] : $item['subject'];
+            $item['thumb'] = tf_post_thumb($bo_table, $row['wr_id'], $thumb_w, $thumb_h, $tf_alt);
+            $item['alt']   = $tf_alt ? $tf_alt : $item['subject'];
         }
         $list[] = $item;
     }
     return $list;
+}
+
+/**
+ * 게시글 대표 썸네일 주소
+ * 원본 사진이 요청 크기보다 작으면 그누보드가 흰 여백을 채운 썸네일을 만들기 때문에,
+ * 원본 크기를 넘지 않는 범위에서 같은 비율로 크기를 줄여 요청합니다.
+ */
+function tf_post_thumb($bo_table, $wr_id, $w, $h, &$alt = '')
+{
+    global $g5;
+    $ratio = $h / $w;
+    $bo = preg_replace('/[^a-z0-9_]/i', '', $bo_table);
+    $f = sql_fetch(" select bf_width, bf_height from {$g5['board_file_table']} where bo_table = '{$bo}' and wr_id = '".(int) $wr_id."' and bf_type between 1 and 3 order by bf_no limit 1 ");
+    if (!empty($f['bf_width']) && !empty($f['bf_height'])) {
+        // 가로·세로 모두 원본 안에 들어가는 최대 크기
+        $max_w = min((int) $f['bf_width'], (int) floor($f['bf_height'] / $ratio));
+        if ($max_w < $w) { $w = max(160, $max_w); $h = (int) round($w * $ratio); }
+    }
+    $thumb = get_list_thumbnail($bo_table, $wr_id, $w, $h, false, true);
+    $alt = isset($thumb['alt']) ? $thumb['alt'] : '';
+    return isset($thumb['src']) ? $thumb['src'] : '';
 }
 
 /** 아이콘 SVG (장식용) */

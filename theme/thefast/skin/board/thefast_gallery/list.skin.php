@@ -1,6 +1,7 @@
 <?php
 if (!defined('_GNUBOARD_')) exit; // 개별 페이지 접근 불가
 include_once(G5_LIB_PATH.'/thumbnail.lib.php');
+include_once(G5_THEME_PATH.'/inc/tf.lib.php');
 add_stylesheet('<link rel="stylesheet" href="'.tf_asset_url(G5_THEME_CSS_URL.'/board.css').'">', 0);
 
 global $tf_board_fields;
@@ -57,9 +58,10 @@ $tf_th = $board['bo_gallery_height'] ? (int) $board['bo_gallery_height'] : 480;
 
     <ul class="tf-gal">
         <?php for ($i=0; $i<count($list); $i++) {
-            $thumb = strpos($list[$i]['wr_option'], 'secret') === false
-                ? get_list_thumbnail($board['bo_table'], $list[$i]['wr_id'], $tf_tw, $tf_th, false, true)
-                : array('src' => '', 'alt' => '');
+            $thumb = array('src' => '', 'alt' => '');
+            if (strpos($list[$i]['wr_option'], 'secret') === false) {
+                $thumb['src'] = tf_post_thumb($board['bo_table'], $list[$i]['wr_id'], $tf_tw, $tf_th, $thumb['alt']); // 원본보다 크게 요청하지 않음
+            }
         ?>
         <li class="tf-gal__item">
             <?php if ($is_checkbox) { ?>
